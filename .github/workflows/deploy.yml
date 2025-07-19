@@ -1,0 +1,35 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: deploy
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd /var/www/sergiopalomo
+            git pull origin main || git clone https://github.com/${{ github.repository }} .
+            cat > .env.production << EOF
+            NODE_ENV=production
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+            BETTER_AUTH_URL=${{ secrets.BETTER_AUTH_URL }}
+            AUTH_TRUST_HOST=${{ secrets.AUTH_TRUST_HOST }}
+            NEXT_PUBLIC_BETTER_AUTH_URL=${{ secrets.NEXT_PUBLIC_BETTER_AUTH_URL }}
+            EOF
+            docker-compose down
+            docker-compose build --no-cache
+            docker-compose up -d
+            docker image prune -f
