@@ -4,7 +4,7 @@ import { adminClient } from "better-auth/client/plugins"
 export const authClient = createAuthClient({
     plugins: [adminClient()],
     // базовый URL для API (опционально)
-    baseURL: process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3000'
+    baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000'
 })
 
 
