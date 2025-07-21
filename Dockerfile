@@ -2,13 +2,19 @@ FROM node:23-alpine
 
 WORKDIR /app
 
+# Копируем package.json и package-lock.json
 COPY package*.json ./
+
+# Устанавливаем зависимости
 RUN npm ci
 
-# Prisma generate
+# Копируем все файлы проекта (включая prisma/schema.prisma)
+COPY . .
+
+# Генерируем Prisma клиент (после копирования schema.prisma)
 RUN npx prisma generate
 
-COPY . .
+# Собираем Next.js приложение
 RUN npm run build
 
 EXPOSE 3000
