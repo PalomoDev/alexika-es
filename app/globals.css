@@ -1,13 +1,18 @@
+/* Импорты TailwindCSS и анимаций */
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Кастомный вариант для темной темы */
 @custom-variant dark (&:is(.dark *));
 
+/* Токены цветов для Tailwind 4 (маппинг CSS переменных в Tailwind классы) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Переменные для сайдбара (navigation, меню) */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -16,58 +21,93 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
+
+  /* Основные переменные UI компонентов */
+  --color-ring: var(--ring);           /* Цвет фокуса (outline) */
+  --color-input: var(--input);         /* Фон инпутов */
+  --color-border: var(--border);       /* Цвет границ */
+  --color-destructive: var(--destructive); /* Красный цвет (удаление, ошибки) */
+
+  /* Брендовый цвет */
+  --color-brand: var(--brand);         /* Основной брендовый цвет #FB6E44 */
+  --color-brand-foreground: var(--brand-foreground); /* Текст на брендовом фоне */
+  --color-brand-muted: var(--brand-muted); /* Приглушенный брендовый цвет (50% прозрачности) */
+  --color-brand-hover: var(--brand-hover); /* Темная версия для hover состояний */
+
+  /* Акцентные цвета (hover состояния, второстепенные элементы) */
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
+
+  /* Приглушенные цвета (плейсхолдеры, второстепенный текст) */
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
+
+  /* Вторичные цвета (кнопки, блоки) */
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
+
+  /* Основные цвета (главные кнопки, ссылки) */
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+
+  /* Цвета для всплывающих окон (dropdown, tooltip) */
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
+
+  /* Цвета для карточек */
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Радиусы скругления */
+  --radius-sm: calc(var(--radius) - 4px);  /* Маленький */
+  --radius-md: calc(var(--radius) - 2px);  /* Средний */
+  --radius-lg: var(--radius);              /* Большой */
+  --radius-xl: calc(var(--radius) + 4px);  /* Очень большой */
 }
 
+/* Светлая тема - основные CSS переменные */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem; /* Базовый радиус скругления (10px) */
+
+  /* Карточки и контейнеры */
+  --card: oklch(1 0 0);                    /* Белый фон */
+  --card-foreground: oklch(0.145 0 0);     /* Темный текст */
+
+  /* Всплывающие окна */
+  --popover: oklch(1 0 0);                 /* Белый фон */
+  --popover-foreground: oklch(0.145 0 0);  /* Темный текст */
+
+  /* Основные цвета (главные кнопки, ссылки) */
+  --primary: oklch(0.205 0 0);             /* Темно-серый */
+  --primary-foreground: oklch(0.985 0 0);  /* Светлый текст */
+
+  /* Вторичные цвета */
+  --secondary: oklch(0.97 0 0);            /* Светло-серый фон */
+  --secondary-foreground: oklch(0.205 0 0); /* Темный текст */
+
+  /* Приглушенные цвета */
+  --muted: oklch(0.97 0 0);                /* Светло-серый */
+  --muted-foreground: oklch(0.556 0 0);    /* Серый текст */
+
+  /* Акцентные цвета */
+  --accent: oklch(0.97 0 0);               /* Светло-серый */
+  --accent-foreground: oklch(0.205 0 0);   /* Темный текст */
+
+  /* Деструктивные действия (удаление, ошибки) */
+  --destructive: oklch(0.577 0.245 27.325); /* Красный */
+
+  /* Брендовый цвет */
+  --brand: #FB6E44;                    /* Оранжевый брендовый цвет */
+  --brand-foreground: oklch(1 0 0);    /* Белый текст на брендовом фоне */
+  --brand-muted: #FB6E4480;            /* 50% прозрачности от брендового цвета */
+  --brand-hover: #E55A33;              /* Темнее на ~15% для hover эффектов */
+
+  /* Границы и элементы форм */
+  --border: oklch(0.922 0 0);              /* Светло-серая граница */
+  --input: oklch(0.922 0 0);               /* Фон инпутов */
+  --ring: oklch(0.708 0 0);                /* Цвет фокуса */
+
+  /* Сайдбар */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -76,32 +116,46 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Основные цвета страницы */
+  --background: oklch(1 0 0);              /* Белый фон */
+  --foreground: oklch(0.145 0 0);          /* Темный текст */
 }
 
+/* Темная тема - инвертированные цвета */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
+  --background: oklch(0.145 0 0);          /* Темный фон */
+  --foreground: oklch(0.985 0 0);          /* Светлый текст */
+
+  --card: oklch(0.205 0 0);                /* Темно-серые карточки */
+  --card-foreground: oklch(0.985 0 0);     /* Светлый текст */
+
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+
+  --primary: oklch(0.922 0 0);             /* Светлый primary */
+  --primary-foreground: oklch(0.205 0 0);  /* Темный текст на primary */
+
+  --secondary: oklch(0.269 0 0);           /* Темно-серый */
   --secondary-foreground: oklch(0.985 0 0);
+
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
+
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+
+  --destructive: oklch(0.704 0.191 22.216); /* Более яркий красный */
+
+  --brand: #FB6E44;                    /* Тот же брендовый цвет в темной теме */
+  --brand-foreground: oklch(1 0 0);    /* Белый текст на брендовом фоне */
+  --brand-muted: #FB6E4480;            /* 50% прозрачности от брендового цвета */
+  --brand-hover: #E55A33;              /* Темнее на ~15% для hover эффектов */
+
+  --border: oklch(1 0 0 / 10%);            /* Полупрозрачные границы */
+  --input: oklch(1 0 0 / 15%);             /* Полупрозрачный фон инпутов */
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -112,11 +166,12 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Базовые стили для всех элементов */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50; /* Унифицированные границы и фокус */
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground;  /* Основные цвета из переменных */
   }
 }

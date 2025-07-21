@@ -1,9 +1,8 @@
-// components/auth/RegisterForm.tsx
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { signUp } from '@/lib/auth-client'
+import { authClient } from '@/lib/auth-client'
 
 export default function RegisterForm() {
     const [name, setName] = useState('')
@@ -17,47 +16,48 @@ export default function RegisterForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsLoading(true)
         setError('')
         setSuccess('')
 
         // Проверка совпадения паролей
         if (password !== confirmPassword) {
             setError('Пароли не совпадают')
-            setIsLoading(false)
             return
         }
 
         // Проверка длины пароля
         if (password.length < 8) {
             setError('Пароль должен содержать минимум 8 символов')
-            setIsLoading(false)
             return
         }
 
-        try {
-            const result = await signUp.email({
-                email,
-                password,
-                name,
-            })
-
-            if (result.error) {
-                setError(result.error.message || 'Ошибка регистрации')
-            } else {
+        const { data, error: signUpError } = await authClient.signUp.email({
+            email,
+            password,
+            name,
+            callbackURL: "/dashboard"
+        }, {
+            onRequest: () => {
+                setIsLoading(true)
+            },
+            onSuccess: () => {
                 setSuccess('Регистрация успешна! Перенаправляем...')
-                // Если autoSignIn включен, пользователь уже авторизован
                 setTimeout(() => {
                     router.push('/dashboard')
                     router.refresh()
                 }, 1500)
+            },
+            onError: (ctx) => {
+                setError(ctx.error.message || 'Ошибка регистрации')
+                setIsLoading(false)
             }
-        } catch (err) {
-            setError('Произошла ошибка при регистрации')
-            console.error('Registration error:', err)
-        } finally {
-            setIsLoading(false)
+        })
+
+        if (signUpError) {
+            setError(signUpError.message || 'Ошибка регистрации')
         }
+
+        setIsLoading(false)
     }
 
     return (

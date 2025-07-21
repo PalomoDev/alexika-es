@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -30,6 +31,10 @@ model User {
   orders  Order[]
   reviews Review[]
 
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+
   @@unique([email])
   @@map("user")
 }
@@ -44,6 +49,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@map("session")
@@ -86,6 +93,7 @@ model Verification {
 // ========================================
 
 // Категории товаров (палатки, спальные мешки, рюкзаки и т.д.)
+
 model Category {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "Палатки", "Спальные мешки"
@@ -108,6 +116,7 @@ model Category {
 }
 
 // Подкатегории товаров (2-местные палатки, зимние спальники и т.д.)
+
 model Subcategory {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "2-местные", "Экспедиционные", "Зимние", "Водонепроницаемые"
@@ -131,6 +140,7 @@ model Subcategory {
 }
 
 // Связующая таблица между категориями и подкатегориями
+
 model CategorySubcategory {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   categoryId    String   @db.Uuid
@@ -143,7 +153,8 @@ model CategorySubcategory {
   category    Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subcategory Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
 
-  @@unique([categoryId, subcategoryId]) // Уникальная пара
+  // Уникальная пара
+  @@unique([categoryId, subcategoryId])
   @@index([categoryId])
   @@index([subcategoryId])
   @@index([sortOrder])
@@ -151,6 +162,7 @@ model CategorySubcategory {
 }
 
 // Связующая таблица между товарами и подкатегориями (many-to-many)
+
 model ProductSubcategory {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   productId     String   @db.Uuid
@@ -162,13 +174,15 @@ model ProductSubcategory {
   product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
   subcategory Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
 
-  @@unique([productId, subcategoryId]) // Уникальная пара - товар не может иметь одну подкатегорию дважды
+  // Уникальная пара - товар не может иметь одну подкатегорию дважды
+  @@unique([productId, subcategoryId])
   @@index([productId])
   @@index([subcategoryId])
   @@map("product_subcategories")
 }
 
 // Бренды товаров
+
 model Brand {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String   @unique // "Coleman", "The North Face", "Deuter"
@@ -194,6 +208,7 @@ model Brand {
 // ========================================
 
 // Справочник всех возможных спецификаций
+
 model Specification {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String   @unique // "Количество мест", "Температура комфорта", "Вес", "Материал"
@@ -220,6 +235,7 @@ model Specification {
 }
 
 // Какие спецификации должны быть у товаров определенной категории
+
 model CategorySpecification {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   categoryId      String   @db.Uuid
@@ -233,7 +249,8 @@ model CategorySpecification {
   category      Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   specification Specification @relation(fields: [specificationId], references: [id], onDelete: Cascade)
 
-  @@unique([categoryId, specificationId]) // Уникальная пара - категория не может иметь дубли спецификации
+  // Уникальная пара - категория не может иметь дубли спецификации
+  @@unique([categoryId, specificationId])
   @@index([categoryId])
   @@index([specificationId])
   @@index([sortOrder])
@@ -241,6 +258,7 @@ model CategorySpecification {
 }
 
 // Конкретные значения спецификаций для каждого товара
+
 model ProductSpecificationValue {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   productId       String   @db.Uuid
@@ -253,13 +271,15 @@ model ProductSpecificationValue {
   product       Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   specification Specification @relation(fields: [specificationId], references: [id], onDelete: Cascade)
 
-  @@unique([productId, specificationId]) // Товар не может иметь дубли одной спецификации
+  // Товар не может иметь дубли одной спецификации
+  @@unique([productId, specificationId])
   @@index([productId])
   @@index([specificationId])
   @@map("product_specification_values")
 }
 
 // Основная модель товара
+
 model Product {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // Название товара
@@ -288,11 +308,12 @@ model Product {
   OrderItem            OrderItem[] // Позиции в заказах
   Review               Review[] // Отзывы о товаре
 
+  // Индекс для быстрого поиска по артикулу
   @@index([categoryId])
   @@index([brandId])
   @@index([isFeatured])
   @@index([isActive])
-  @@index([sku]) // Индекс для быстрого поиска по артикулу
+  @@index([sku])
   @@map("products")
 }
 
@@ -301,6 +322,7 @@ model Product {
 // ========================================
 
 // Особенности товаров (водостойкость, легкость и т.д.)
+
 model Feature {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "Водостойкий", "Легкий", "Ветрозащитный"
@@ -324,6 +346,7 @@ model Feature {
 }
 
 // Связь между товарами и их особенностями (many-to-many)
+
 model ProductFeature {
   productId String @db.Uuid
   featureId String @db.Uuid
@@ -341,6 +364,7 @@ model ProductFeature {
 // ========================================
 
 // Корзина пользователя
+
 model Cart {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId        String? // Связь с пользователем (может быть null для гостей)
@@ -361,6 +385,7 @@ model Cart {
 }
 
 // Заказы
+
 model Order {
   id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId          String // Связь с пользователем
@@ -389,6 +414,7 @@ model Order {
 }
 
 // Позиции в заказе
+
 model OrderItem {
   orderId   String  @db.Uuid
   productId String  @db.Uuid
@@ -411,6 +437,7 @@ model OrderItem {
 // ========================================
 
 // Отзывы о товарах
+
 model Review {
   id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId             String // Связь с пользователем
