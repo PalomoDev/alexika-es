@@ -1,48 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getSessionCookie } from "better-auth/cookies"
 
 export async function middleware(request: NextRequest) {
-    console.log('🚀 Middleware running for:', request.nextUrl.pathname)
-
     const pathname = request.nextUrl.pathname
 
-    // Публичные пути, которые доступны всем
+    // Публичные пути + статические ресурсы + API роуты Better Auth
     const publicPaths = ['/', '/login']
+    const isStaticFile = pathname.startsWith('/_next/') ||
+        pathname.startsWith('/images/') ||
+        pathname.startsWith('/icons/') ||
+        pathname.startsWith('/api/auth/') || // Better Auth API роуты
+        pathname.startsWith('/.well-known/') || // Служебные файлы браузера
+        pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|js|css)$/)
 
-    // Проверяем, является ли текущий путь публичным
-    const isPublicPath = publicPaths.includes(pathname)
-
-    // Получаем cookie с токеном сессии
-    const sessionToken = request.cookies.get('better-auth.session_token')
-
-    console.log('🍪 Session token:', sessionToken ? 'найден' : 'не найден')
-    console.log('🛤️  Current path:', pathname)
-    console.log('🌐 Is public path:', isPublicPath)
-
-    // Если путь публичный - пропускаем
-    if (isPublicPath) {
-        console.log('✅ Публичный путь - доступ разрешен')
+    if (publicPaths.includes(pathname) || isStaticFile) {
         return NextResponse.next()
     }
 
-    // Если нет токена сессии - редирект на логин
-    if (!sessionToken) {
-        console.log('❌ Нет авторизации - редирект на логин')
-        const loginUrl = new URL('/login', request.url)
-        // Сохраняем текущий путь для редиректа после авторизации
-        loginUrl.searchParams.set('redirect', pathname)
-        return NextResponse.redirect(loginUrl)
+    // Используем официальную функцию Better Auth для проверки сессии
+    const sessionCookie = getSessionCookie(request)
+
+    if (!sessionCookie) {
+        console.log('❌ No session found for:', pathname)
+        return NextResponse.redirect(new URL("/login?redirect=" + encodeURIComponent(pathname), request.url))
     }
 
-    console.log('✅ Пользователь авторизован - доступ разрешен')
     return NextResponse.next()
 }
 
 export const config = {
-    // Применяем middleware ко всем путям кроме:
-    // - статических файлов (_next/static)
-    // - изображений и других медиа
-    // - API routes (опционально, если нужно защитить - убрать из исключений)
-    matcher: [
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-    ],
+    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }

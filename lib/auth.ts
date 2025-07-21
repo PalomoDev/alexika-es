@@ -4,7 +4,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import prisma from './prisma'
 import { admin } from "better-auth/plugins"
 import createLogger from '@/lib/logger';
-import {nextCookies} from "better-auth/next-js";
+
 
 
 const logger = createLogger('auth.ts');
@@ -12,6 +12,7 @@ const logger = createLogger('auth.ts');
 
 
 export const auth = betterAuth({
+    baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
     database: prismaAdapter(prisma, {
         provider: 'postgresql',
     }),
@@ -31,8 +32,10 @@ export const auth = betterAuth({
 
     trustedOrigins: [
         'http://localhost:3000',
-        'https://alexika.es/',
-        'http://192.168.0.100:3000'
+        'http://192.168.0.100:3000',
+        'https://alexika.es'  // для продакшена
+
+
     ],
 
     appName: 'Alexika de Aventura',
@@ -41,8 +44,8 @@ export const auth = betterAuth({
         admin({
             defaultRole: 'user', // роль по умолчанию
             adminRole: 'admin',  // роль админа
-        }),
-        nextCookies()
+        })
+
     ],
 
     user: {
