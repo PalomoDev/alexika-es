@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
     const publicPaths = ['/', '/login']
     const isStaticFile = pathname.startsWith('/_next/') ||
         pathname.startsWith('/images/') ||
+        pathname.startsWith('/svg/') ||
         pathname.startsWith('/icons/') ||
         pathname.startsWith('/api/auth/') || // Better Auth API роуты
         pathname.startsWith('/.well-known/') || // Служебные файлы браузера

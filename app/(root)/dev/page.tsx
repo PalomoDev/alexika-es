@@ -28,6 +28,12 @@ export default function HomePage() {
             >
               Панель управления
             </Link>
+            <Link
+                href={ROUTES.ADMIN_PAGES.HOME}
+                className="block w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
+            >
+              Admin Panel
+            </Link>
           </div>
         </div>
       </div>

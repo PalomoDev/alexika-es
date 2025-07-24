@@ -13,7 +13,7 @@ const logoSizes = {
         icon: { width: 32, height: 32 },
         name: {
             horizontal: { width: 120, height: 20 },
-            vertical: { width: 100, height: 16 } // Меньше для вертикального
+            vertical: { width: 100, height: 16 }
         },
         spacingHorizontal: 'ml-1',
         spacingVertical: 'mt-1'
@@ -22,7 +22,7 @@ const logoSizes = {
         icon: { width: 33, height: 33 },
         name: {
             horizontal: { width: 210, height: 40 },
-            vertical: { width: 170, height: 32 } // Меньше для вертикального
+            vertical: { width: 170, height: 32 }
         },
         spacingHorizontal: 'ml-2',
         spacingVertical: 'mt-2'
@@ -31,7 +31,7 @@ const logoSizes = {
         icon: { width: 80, height: 80 },
         name: {
             horizontal: { width: 320, height: 50 },
-            vertical: { width: 260, height: 40 } // Меньше для вертикального
+            vertical: { width: 260, height: 40 }
         },
         spacingHorizontal: 'ml-3',
         spacingVertical: 'mt-3'
@@ -61,7 +61,7 @@ export default function Logo({
             <div className={containerClasses}>
                 {!hideIcon && (
                     <Image
-                        src="svg/logo/logo-round.svg"
+                        src="/svg/logo/logo-round.svg"
                         alt="Логотип"
                         width={currentSize.icon.width}
                         height={currentSize.icon.height}
@@ -69,7 +69,7 @@ export default function Logo({
                     />
                 )}
                 <Image
-                    src="svg//logo/logo-name.svg"
+                    src="/svg/logo/logo-name.svg"
                     alt="Название компании"
                     width={nameSize.width}
                     height={nameSize.height}

@@ -3,6 +3,7 @@ const BASE_URL = 'dev/'
 
 
 export const ROUTES = {
+    BASE_URL: BASE_URL,
     API: {
         AUTH: `${BASE_URL}api/auth`,
         USERS: `${BASE_URL}/api/users`,
@@ -12,7 +13,11 @@ export const ROUTES = {
         HOME: `${BASE_URL}`,
         LOGIN:`${BASE_URL}login`,
         DASHBOARD: `${BASE_URL}dashboard`,
-        ADMIN: `${BASE_URL}admin`,
+
     },
+    ADMIN_PAGES: {
+        HOME: `/admin`,
+        CATALOG: `/admin/catalog`,
+    }
 } as const
 

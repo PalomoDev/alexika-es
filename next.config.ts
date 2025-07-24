@@ -42,6 +42,15 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+
+    async rewrites() {
+        return [
+            {
+                source: '/uploads/:path*',
+                destination: '/api/static/:path*',
+            },
+        ];
+    },
 };
 
 export default nextConfig;

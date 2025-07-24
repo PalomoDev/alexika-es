@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,7 +12,7 @@ model User {
   name          String
   email         String
   emailVerified Boolean
-  image         String?
+  image         String? // Оставляем как есть для авторизации
   createdAt     DateTime
   updatedAt     DateTime
 
@@ -89,17 +88,35 @@ model Verification {
 }
 
 // ========================================
+// IMAGE MODEL - Централизованное управление изображениями
+// ========================================
+
+model Image {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  filename  String    @unique // "product_abc123.jpg"
+  url       String    @unique // "/uploads/product_abc123.jpg"
+  alt       String? // Alt текст для изображения
+  sortOrder Int       @default(0) // Приоритет сортировки (используется для продуктов)
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @updatedAt @db.Timestamp(6)
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  @@index([sortOrder])
+  @@map("images")
+}
+
+// ========================================
 // PRODUCT MODELS - Основные модели товаров
 // ========================================
 
 // Категории товаров (палатки, спальные мешки, рюкзаки и т.д.)
-
 model Category {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "Палатки", "Спальные мешки"
   slug        String   @unique // "palatki", "spalnie-meshki"
   description String? // Описание категории
-  image       String? // Изображение категории для отображения
+  imageIds    String[] @default([]) @db.Uuid // Массив ID изображений
   isActive    Boolean  @default(true) // Активна ли категория
   sortOrder   Int      @default(0) // Порядок сортировки в меню
   createdAt   DateTime @default(now()) @db.Timestamp(6)
@@ -116,13 +133,12 @@ model Category {
 }
 
 // Подкатегории товаров (2-местные палатки, зимние спальники и т.д.)
-
 model Subcategory {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "2-местные", "Экспедиционные", "Зимние", "Водонепроницаемые"
   slug        String   @unique // Теперь глобально уникальный
   description String? // Описание подкатегории
-  image       String? // Изображение подкатегории
+  imageIds    String[] @default([]) @db.Uuid // Массив ID изображений
   isActivity  Boolean  @default(false) // Является ли субкатегория активностью (для отображения в меню активностей)
   isActive    Boolean  @default(true) // Активна ли подкатегория
   sortOrder   Int      @default(0) // Общий порядок сортировки
@@ -140,7 +156,6 @@ model Subcategory {
 }
 
 // Связующая таблица между категориями и подкатегориями
-
 model CategorySubcategory {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   categoryId    String   @db.Uuid
@@ -162,7 +177,6 @@ model CategorySubcategory {
 }
 
 // Связующая таблица между товарами и подкатегориями (many-to-many)
-
 model ProductSubcategory {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   productId     String   @db.Uuid
@@ -182,13 +196,12 @@ model ProductSubcategory {
 }
 
 // Бренды товаров
-
 model Brand {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String   @unique // "Coleman", "The North Face", "Deuter"
   slug        String   @unique // "coleman", "the-north-face", "deuter"
   description String? // Описание бренда
-  logo        String? // Логотип бренда
+  imageIds    String[] @default([]) @db.Uuid // Массив ID изображений (логотип)
   website     String? // Сайт бренда
   isActive    Boolean  @default(true) // Активен ли бренд
   sortOrder   Int      @default(0) // Порядок сортировки
@@ -208,7 +221,6 @@ model Brand {
 // ========================================
 
 // Справочник всех возможных спецификаций
-
 model Specification {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String   @unique // "Количество мест", "Температура комфорта", "Вес", "Материал"
@@ -235,7 +247,6 @@ model Specification {
 }
 
 // Какие спецификации должны быть у товаров определенной категории
-
 model CategorySpecification {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   categoryId      String   @db.Uuid
@@ -258,7 +269,6 @@ model CategorySpecification {
 }
 
 // Конкретные значения спецификаций для каждого товара
-
 model ProductSpecificationValue {
   id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   productId       String   @db.Uuid
@@ -279,7 +289,6 @@ model ProductSpecificationValue {
 }
 
 // Основная модель товара
-
 model Product {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // Название товара
@@ -287,14 +296,13 @@ model Product {
   sku         String   @unique // Артикул товара (Stock Keeping Unit)
   categoryId  String   @db.Uuid // Связь с категорией
   brandId     String   @db.Uuid // Связь с брендом
-  images      String[] // Массив URL изображений
+  imageIds    String[] @default([]) @db.Uuid // Массив ID изображений (галерея)
   description String // Описание товара
   stock       Int // Количество на складе
   price       Decimal  @default(0) @db.Decimal(12, 2) // Цена
   rating      Decimal  @default(0) @db.Decimal(3, 2) // Рейтинг (0-5)
   numReviews  Int      @default(0) // Количество отзывов
   isFeatured  Boolean  @default(false) // Рекомендуемый товар
-  banner      String? // Баннер для товара
   isActive    Boolean  @default(true) // Активен ли товар
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @updatedAt @db.Timestamp(6)
@@ -322,13 +330,12 @@ model Product {
 // ========================================
 
 // Особенности товаров (водостойкость, легкость и т.д.)
-
 model Feature {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "Водостойкий", "Легкий", "Ветрозащитный"
   key         String   @unique // "waterproof", "lightweight", "windproof" - для программного доступа
   icon        String // "droplet", "feather", "wind" - имя иконки (Lucide, Heroicons и т.д.)
-  iconImage   String? // "/icons/waterproof.svg" - путь к файлу иконки
+  imageIds    String[] @default([]) @db.Uuid // Массив ID изображений (иконки)
   description String? // "Защита от влаги до 3000мм", "Вес менее 2кг"
   category    String? // "protection", "comfort", "convenience" - группировка особенностей
   color       String? // "blue", "green", "orange" - цвет иконки/бейджа
@@ -346,7 +353,6 @@ model Feature {
 }
 
 // Связь между товарами и их особенностями (many-to-many)
-
 model ProductFeature {
   productId String @db.Uuid
   featureId String @db.Uuid
@@ -364,7 +370,6 @@ model ProductFeature {
 // ========================================
 
 // Корзина пользователя
-
 model Cart {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId        String? // Связь с пользователем (может быть null для гостей)
@@ -385,7 +390,6 @@ model Cart {
 }
 
 // Заказы
-
 model Order {
   id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId          String // Связь с пользователем
@@ -414,7 +418,6 @@ model Order {
 }
 
 // Позиции в заказе
-
 model OrderItem {
   orderId   String  @db.Uuid
   productId String  @db.Uuid
@@ -437,7 +440,6 @@ model OrderItem {
 // ========================================
 
 // Отзывы о товарах
-
 model Review {
   id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId             String // Связь с пользователем

@@ -41,6 +41,54 @@ docker logs alexika-new-app-1 2>&1 | grep "auth.ts"
 docker logs alexika-new-app-1 2>&1 | grep "/api/"
 ```
 
+## 🔐 Проверка ENV переменных в контейнере
+
+### Основные команды для ENV
+
+```bash
+# Показать все ENV переменные в контейнере
+docker exec alexika-new-app-1 env
+
+# Показать ENV переменные с фильтром
+docker exec alexika-new-app-1 env | grep BETTER_AUTH
+
+# Показать конкретную переменную
+docker exec alexika-new-app-1 printenv DATABASE_URL
+
+# Зайти внутрь контейнера для детального анализа
+docker exec -it alexika-new-app-1 sh
+
+# Внутри контейнера можно использовать:
+# env | grep AUTH
+# echo $DATABASE_URL
+# cat .env.production
+```
+
+### Быстрая проверка ключевых переменных
+
+```bash
+# Проверить основные переменные окружения
+docker exec alexika-new-app-1 env | grep -E "(DATABASE_URL|BETTER_AUTH|NEXTAUTH|NODE_ENV)"
+
+# Проверить переменные Better Auth
+docker exec alexika-new-app-1 env | grep -E "(BETTER_AUTH_URL|BETTER_AUTH_SECRET)"
+
+# Проверить переменные базы данных
+docker exec alexika-new-app-1 env | grep -E "(DATABASE|POSTGRES)"
+```
+
+### Сравнение ENV файлов
+
+```bash
+# Посмотреть .env файлы на хосте
+cat /var/www/alexika-new/.env.production
+cat /var/www/alexika-new/.env.local
+
+# Посмотреть что загрузилось в контейнер
+docker exec alexika-new-app-1 cat .env.production
+docker exec alexika-new-app-1 cat .env.local
+```
+
 ## 🌐 Логи Nginx
 
 ```bash
@@ -76,7 +124,7 @@ sudo journalctl --since "30 minutes ago"
 
 ```bash
 # Список запущенных контейнеров
-
+docker ps
 
 # Статистика использования ресурсов
 docker stats
@@ -107,6 +155,8 @@ curl -I https://alexika.es
 echo "alias logs='docker logs -f alexika-new-app-1'" >> ~/.bashrc
 echo "alias app-status='docker ps'" >> ~/.bashrc
 echo "alias app-stats='docker stats'" >> ~/.bashrc
+echo "alias app-env='docker exec alexika-new-app-1 env'" >> ~/.bashrc
+echo "alias app-shell='docker exec -it alexika-new-app-1 sh'" >> ~/.bashrc
 echo "alias nginx-access='sudo tail -f /var/log/nginx/access.log'" >> ~/.bashrc
 echo "alias nginx-error='sudo tail -f /var/log/nginx/error.log'" >> ~/.bashrc
 
@@ -118,6 +168,8 @@ source ~/.bashrc
 - `logs` - логи приложения в реальном времени
 - `app-status` - статус контейнеров
 - `app-stats` - статистика ресурсов
+- `app-env` - ENV переменные контейнера
+- `app-shell` - войти в контейнер
 - `nginx-access` - логи доступа Nginx
 - `nginx-error` - логи ошибок Nginx
 
@@ -132,14 +184,30 @@ docker ps
 # 2. Посмотреть логи
 docker logs --tail 100 alexika-new-app-1
 
-# 3. Проверить Nginx
+# 3. Проверить ENV переменные
+docker exec alexika-new-app-1 env | grep -E "(DATABASE|BETTER_AUTH)"
+
+# 4. Проверить Nginx
 sudo systemctl status nginx
 
-# 4. Проверить порт
+# 5. Проверить порт
 sudo netstat -tlnp | grep 3000
 
-# 5. Перезапустить контейнер если нужно
+# 6. Перезапустить контейнер если нужно
 docker restart alexika-new-app-1
+```
+
+### Если проблемы с аутентификацией
+
+```bash
+# Проверить переменные Better Auth
+docker exec alexika-new-app-1 env | grep BETTER_AUTH
+
+# Проверить доступность базы данных
+docker exec alexika-new-app-1 printenv DATABASE_URL
+
+# Проверить логи аутентификации
+docker logs alexika-new-app-1 2>&1 | grep -i "auth"
 ```
 
 ### Если GitHub Actions не деплоит
@@ -154,12 +222,15 @@ ls -la /var/www/alexika-new
 
 # Проверить .env файл
 cat .env.production
+
+# Сравнить с тем что в контейнере
+docker exec alexika-new-app-1 cat .env.production
 ```
 
 ## 📝 Часто используемые команды
 
 ```bash
-# Топ-3 самые используемые команды:
+# Топ-5 самые используемые команды:
 
 # 1. Мониторинг логов в реальном времени
 docker logs -f alexika-new-app-1
@@ -167,10 +238,29 @@ docker logs -f alexika-new-app-1
 # 2. Проверка статуса
 docker ps
 
-# 3. Логи Nginx (если проблемы с доступом)
+# 3. Проверка ENV переменных
+docker exec alexika-new-app-1 env | grep -E "(DATABASE|BETTER_AUTH)"
+
+# 4. Логи Nginx (если проблемы с доступом)
 sudo tail -f /var/log/nginx/access.log
+
+# 5. Вход в контейнер для детального анализа
+docker exec -it alexika-new-app-1 sh
+```
+
+## 🔍 Диагностика Better Auth
+
+```bash
+# Полная диагностика Better Auth переменных
+docker exec 3bf1e180f1e env | grep -E "(BETTER_AUTH|DATABASE|NEXTAUTH)" | sort
+
+# Проверить структуру базы данных (если доступно)
+docker exec alexika-new-app npx prisma db pull --preview-feature
+
+# Логи связанные с аутентификацией
+docker logs alexika-new-app 2>&1 | grep -i -E "(auth|sign|login|register)"
 ```
 
 ---
 
-**💡 Совет:** Держите открытыми 2 терминала - один для логов приложения (`docker logs -f`), другой для команд управления.
+**💡 Совет:** Держите открытыми 3 терминала - один для логов приложения (`docker logs -f`), один для ENV переменных (`docker exec ... env`), третий для команд управления.

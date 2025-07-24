@@ -1,5 +1,5 @@
-// lib/validation/user.ts
-// Файл: lib/validation/user.ts
+// lib/validation/auth.validation.ts
+// Файл: lib/validation/auth.validation.ts
 // Назначение: Zod-схемы для валидации данных регистрации и логина пользователя
 
 import { z } from "zod";
