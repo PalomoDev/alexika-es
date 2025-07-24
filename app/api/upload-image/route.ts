@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(bytes);
 
         // ✅ ИСПРАВЛЕНО: Путь для сохранения в public/uploads (Next.js стандарт)
-        const uploadDir = join(process.cwd(), 'public', 'uploads');
+        const uploadDir = join(process.cwd(), 'uploads');
         const filePath = join(uploadDir, fileName);
 
         // Создаем папку если её нет
