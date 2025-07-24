@@ -1,5 +1,10 @@
 // app/api/upload-image/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+
+// Конфигурация для App Router - увеличение лимита размера
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -26,6 +31,14 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: 'No file provided' },
                 { status: 400 }
+            );
+        }
+
+        // Проверяем размер файла (10MB максимум)
+        if (file.size > 10 * 1024 * 1024) {
+            return NextResponse.json(
+                { error: 'File too large. Maximum size is 10MB.' },
+                { status: 413 }
             );
         }
 
@@ -56,8 +69,8 @@ export async function POST(request: NextRequest) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // ✅ ИСПРАВЛЕНО: Путь для сохранения в public/uploads (Next.js стандарт)
-        const uploadDir = join(process.cwd(), 'uploads');
+        // ✅ ИСПРАВЛЕНО: Путь для сохранения в app/uploads (где лежат существующие файлы)
+        const uploadDir = join(process.cwd(), 'app', 'uploads');
         const filePath = join(uploadDir, fileName);
 
         // Создаем папку если её нет
