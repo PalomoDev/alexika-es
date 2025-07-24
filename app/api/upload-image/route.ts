@@ -1,15 +1,15 @@
 // app/api/upload-image/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-
-// Конфигурация для App Router - увеличение лимита размера
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
-export const maxDuration = 30;
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import {CreateImage} from "@/lib/validations/product/image-validation";
 import {createImage} from "@/lib/actions/catalog/image.action";
+
+// Конфигурация для App Router - увеличение лимита размера
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
 
 // Генератор случайной строки
 function generateRandomString(length: number): string {
@@ -23,9 +23,18 @@ function generateRandomString(length: number): string {
 
 export async function POST(request: NextRequest) {
     try {
+        console.log('🚀 Upload started');
+
         const formData = await request.formData();
         const file = formData.get('file') as File;
         const prefix = formData.get('prefix') as string;
+
+        console.log('📄 File info:', {
+            name: file?.name,
+            size: file?.size,
+            type: file?.type,
+            prefix
+        });
 
         if (!file) {
             return NextResponse.json(
@@ -65,24 +74,45 @@ export async function POST(request: NextRequest) {
         const randomString = generateRandomString(6);
         const fileName = `${prefix}_${randomString}.${fileExtension}`;
 
+        console.log('📝 Generated filename:', fileName);
+
         // Конвертируем файл в буфер
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // ✅ ИСПРАВЛЕНО: Путь для сохранения в app/uploads (где лежат существующие файлы)
+        console.log('💾 Buffer created, size:', buffer.length);
+
+        // ПРАВИЛЬНЫЙ путь для сохранения в app/uploads (где лежат существующие файлы)
         const uploadDir = join(process.cwd(), 'app', 'uploads');
         const filePath = join(uploadDir, fileName);
 
+        console.log('📁 Paths:', {
+            uploadDir,
+            filePath,
+            workingDirectory: process.cwd()
+        });
+
+        console.log('📂 Directory exists:', existsSync(uploadDir));
+
         // Создаем папку если её нет
         if (!existsSync(uploadDir)) {
+            console.log('📁 Creating upload directory...');
             await mkdir(uploadDir, { recursive: true });
+            console.log('✅ Upload directory created');
         }
+
+        console.log('💾 Starting file write...');
 
         // Сохраняем файл
         await writeFile(filePath, buffer);
 
-        // URL для доступа к файлу (должен совпадать с существующими изображениями)
+        console.log('✅ File saved successfully to:', filePath);
+        console.log('✅ File exists check:', existsSync(filePath));
+
+        // URL для доступа к файлу
         const fileUrl = `/uploads/${fileName}`;
+
+        console.log('🔗 File URL:', fileUrl);
 
         const createImageData: CreateImage = {
             url: fileUrl,
@@ -91,16 +121,17 @@ export async function POST(request: NextRequest) {
             sortOrder: 0,
         }
 
+        console.log('💾 Saving to database...');
         const createResponse = await createImage(createImageData);
         console.log('createResponse API', createResponse);
 
         if (createResponse.success) {
+            console.log('🎉 Upload completed successfully');
             return NextResponse.json({
                 data: createResponse.data
             });
         } else {
-            // ✅ ИСПРАВЛЕНО: Добавлен return при ошибке
-            console.error('Database error:', createResponse.message);
+            console.error('❌ Database error:', createResponse.message);
             return NextResponse.json(
                 { error: createResponse.message || 'Failed to save image to database' },
                 { status: 500 }
@@ -108,7 +139,7 @@ export async function POST(request: NextRequest) {
         }
 
     } catch (error) {
-        console.error('Upload error:', error);
+        console.error('❌ Upload error:', error);
         return NextResponse.json(
             { error: 'Failed to upload file' },
             { status: 500 }
