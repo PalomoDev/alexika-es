@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Путь для сохранения в корневую папку проекта
-        const uploadDir = join(process.cwd(), 'uploads');
+        // ✅ ИСПРАВЛЕНО: Путь для сохранения в public/uploads (Next.js стандарт)
+        const uploadDir = join(process.cwd(), 'public', 'uploads');
         const filePath = join(uploadDir, fileName);
 
         // Создаем папку если её нет
@@ -68,9 +68,8 @@ export async function POST(request: NextRequest) {
         // Сохраняем файл
         await writeFile(filePath, buffer);
 
-        // Возвращаем URL
+        // URL для доступа к файлу (должен совпадать с существующими изображениями)
         const fileUrl = `/uploads/${fileName}`;
-
 
         const createImageData: CreateImage = {
             url: fileUrl,
@@ -79,16 +78,21 @@ export async function POST(request: NextRequest) {
             sortOrder: 0,
         }
 
-        const createResponse = await createImage(createImageData)
-        console.log('createResponse API', createResponse)
+        const createResponse = await createImage(createImageData);
+        console.log('createResponse API', createResponse);
 
-        if(createResponse.success){
+        if (createResponse.success) {
             return NextResponse.json({
                 data: createResponse.data
             });
+        } else {
+            // ✅ ИСПРАВЛЕНО: Добавлен return при ошибке
+            console.error('Database error:', createResponse.message);
+            return NextResponse.json(
+                { error: createResponse.message || 'Failed to save image to database' },
+                { status: 500 }
+            );
         }
-
-
 
     } catch (error) {
         console.error('Upload error:', error);
