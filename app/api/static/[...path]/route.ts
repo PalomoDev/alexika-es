@@ -12,8 +12,8 @@ export async function GET(
         // Ждем params так как это Promise в новых версиях Next.js
         const resolvedParams = await params;
 
-        // ПРАВИЛЬНЫЙ путь для чтения из app/uploads (где лежат существующие файлы)
-        const filePath = join(process.cwd(), 'app', 'uploads', ...resolvedParams.path);
+        // ИСПРАВЛЕННЫЙ путь для чтения из uploads (БЕЗ дублирования app)
+        const filePath = join(process.cwd(), 'uploads', ...resolvedParams.path);
 
         console.log('📁 Static file request:', {
             requestedPath: resolvedParams.path,

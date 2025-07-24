@@ -82,8 +82,8 @@ export async function POST(request: NextRequest) {
 
         console.log('💾 Buffer created, size:', buffer.length);
 
-        // ПРАВИЛЬНЫЙ путь для сохранения в app/uploads (где лежат существующие файлы)
-        const uploadDir = join(process.cwd(), 'app', 'uploads');
+        // ИСПРАВЛЕННЫЙ путь для сохранения в uploads (БЕЗ дублирования app)
+        const uploadDir = join(process.cwd(), 'uploads');
         const filePath = join(uploadDir, fileName);
 
         console.log('📁 Paths:', {
