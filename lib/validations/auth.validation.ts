@@ -13,6 +13,6 @@ export const registerSchema = z.object({
 
 // Схема для логина пользователя
 export const loginSchema = z.object({
-    email: z.email("Некорректный email"),
-    password: z.string().min(6, "Пароль обязателен"),
+    email: z.email("Correo electrónico no válido"),
+    password: z.string().min(6, "La contraseña es requerida y debe tener al menos 6 caracteres."),
 });

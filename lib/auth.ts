@@ -5,11 +5,7 @@ import prisma from './prisma'
 import { admin } from "better-auth/plugins"
 import createLogger from '@/lib/logger';
 
-
-
 const logger = createLogger('auth.ts');
-
-
 
 export const auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
@@ -30,22 +26,32 @@ export const auth = betterAuth({
         updateAge: 60 * 60 * 24, // 1 день
     },
 
+    // Настройки куков для разных хостов
+    cookies: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        httpOnly: true,
+        // В dev режиме не устанавливаем домен, чтобы куки работали 
+        // как на localhost:3000, так и на 192.168.0.100:3000
+        domain: process.env.NODE_ENV === 'production' 
+            ? process.env.COOKIE_DOMAIN 
+            : undefined,
+        path: '/',
+    },
+
     trustedOrigins: [
         'http://localhost:3000',
         'http://192.168.0.100:3000',
         'https://alexika.es'  // для продакшена
-
-
     ],
 
     appName: 'Alexika de Aventura',
 
     plugins: [
         admin({
-            defaultRole: 'user', // роль по умолчанию
-            adminRole: 'admin',  // роль админа
+            defaultRole: 'user',
+            adminRole: 'admin',
         })
-
     ],
 
     user: {
@@ -57,7 +63,6 @@ export const auth = betterAuth({
             }
         }
     }
-
-
 })
+
 logger.info('🔧 Initializing Better Auth...')

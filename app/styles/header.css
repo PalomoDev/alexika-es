@@ -1,0 +1,61 @@
+@layer components {
+
+    .header {
+        /* Базовые размеры */
+        @apply w-full h-20
+        md:h-30;
+
+        /* Цвета фона */
+        @apply bg-white/90;
+
+        /* шрифт */
+        @apply text-xs
+        md:text-sm
+        lg:text-base
+        xl:text-lg;
+    }
+
+    .header-primary-bar {
+        @apply bg-gray-900
+        text-white
+        w-full flex items-center justify-center h-8 md:h-10
+    }
+
+    .header-primary-container {
+        @apply  w-full mx-auto md:max-w-[1480px]
+        px-4 md:px-8
+        flex items-center justify-between;
+    }
+
+    .header-secondary-bar {
+        @apply   h-16 md:h-20 w-full flex items-center justify-center;
+    }
+    .header-secondary-container {
+        @apply  h-full w-full px-6 md:px-8  xl:px-6 flex items-center justify-between gap-3  md:max-w-[1480px];
+    }
+
+    .menu-responsive {
+        @apply text-sm ;
+    }
+    .main-nav-responsive {
+        @apply pb-0.5;
+    }
+
+    .menu-dropdown {
+        @apply fixed md:top-30 left-0 right-0  bg-white/90 shadow-lg border-t border-gray-200 z-50;
+    }
+    .menu-dropdown-container {
+        @apply  p-4 flex justify-center items-center;
+    }
+
+    .menu-image-size {
+        @apply hidden  md:block md:w-[100px] md:h-[56px] lg:w-[150px] lg:h-[84px] xl:w-[250px] xl:h-[140px]
+    }
+    .card-size {
+        @apply hidden overflow-hidden break-words md:block md:w-[120px] lg:w-[170px] xl:w-[270px]  hover:shadow-sm px-2 py-2;
+    }
+
+    .navigation-bar-text {
+        @apply hidden md:block md:text-xs lg:text-sm md:font-bold  xl:text-base xl:mr-4 text-gray-800;
+    }
+}

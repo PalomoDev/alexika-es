@@ -8,7 +8,6 @@ import {
     ShoppingCart,
     TrendingUp,
     TrendingDown,
-    Eye,
     Plus,
     ArrowRight,
     Calendar,

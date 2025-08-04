@@ -153,7 +153,7 @@ const CreateCategoryForm = () => {
                     <FormField
                         control={form.control}
                         name='imageIds'
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem>
                                 <FormLabel>
                                     Category Image

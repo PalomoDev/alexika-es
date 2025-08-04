@@ -7,10 +7,8 @@ import { z } from "zod"
 import {
     createSubcategorySchema,
     updateSubcategorySchema,
-    deleteSubcategorySchema,
     SubcategoryCreate,
     SubcategoryUpdate,
-    SubcategoryDelete,
     SubcategoryFullResponse
 } from "@/lib/validations/product/subcategory-validation"
 import { ActionResponse } from "@/types/action.type";
@@ -158,10 +156,14 @@ export async function updateSubcategory(data: SubcategoryUpdate): Promise<Action
 }
 
 // Удаление субкатегории
-export async function deleteSubcategory(data: string): Promise<ActionResponse<undefined>> {
+export async function deleteSubcategory(id: string): Promise<ActionResponse<undefined>> {
     try {
-        const validatedData = deleteSubcategorySchema.parse(data);
-        const { id } = validatedData;
+        if (!id || typeof id !== 'string') {
+            return {
+                success: false,
+                message: 'Valid subcategory ID is required'
+            };
+        }
 
         // Проверяем существование субкатегории
         const existingSubcategory = await prisma.subcategory.findUnique({
@@ -182,9 +184,9 @@ export async function deleteSubcategory(data: string): Promise<ActionResponse<un
             };
         }
 
-        // Удаляем субкатегорию в транзакции (каскадное удаление связей настроено в schema.prisma)
+        // Удаляем субкатегорию в транзакции
         await prisma.$transaction(async (tx) => {
-            // Удаляем связи с товарами
+            // Удаляем связи с продуктами
             await tx.productSubcategory.deleteMany({
                 where: { subcategoryId: id }
             });
@@ -201,6 +203,7 @@ export async function deleteSubcategory(data: string): Promise<ActionResponse<un
         });
 
         revalidatePath(`${ROUTES.ADMIN_PAGES.CATALOG}?tab=subcategories`);
+
         return {
             success: true,
             message: 'Subcategory deleted successfully'

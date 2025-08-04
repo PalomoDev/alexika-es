@@ -11,7 +11,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {Check, X, Pencil, Trash2, ExternalLink} from "lucide-react";
+import {Check, X, Pencil, Trash2 } from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {BrandFullResponse} from "@/lib/validations/product/brand";
 import Image from "next/image";

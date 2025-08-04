@@ -181,7 +181,7 @@ const EditCategoryForm = ({ data }: EditCategoryFormProps) => {
                     <FormField
                         control={form.control}
                         name='imageIds'
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem>
                                 <FormLabel>
                                     Category Image

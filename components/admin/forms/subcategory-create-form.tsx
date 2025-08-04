@@ -6,10 +6,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     createSubcategorySchema,
-    SubcategoryCreate,
-    SubcategoryFullResponse
+    SubcategoryCreate
 } from '@/lib/validations/product/subcategory-validation';
-import { CategoryFilter } from '@/lib/validations/product/category-validation';
+
 import { subcategoryDefaultValues } from "@/lib/constants/form-constant";
 import { createSubcategory } from "@/lib/actions/catalog/subcategory.action";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -263,7 +262,7 @@ const CreateSubcategoryForm = ({ categories }: CreateSubcategoryFormProps) => {
                     <FormField
                         control={form.control}
                         name='imageIds'
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem>
                                 <FormLabel>
                                     Subcategory Image

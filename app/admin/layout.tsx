@@ -1,16 +1,20 @@
-import { getCurrentUser } from "@/lib/utils/auth-utils";
-import type { Metadata } from "next";
+
 import { AdminGuard } from "@/components/auth/AdminGuard";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { Monitor, Smartphone } from "lucide-react";
+import {auth} from "@/lib/auth";
+import {headers} from "next/headers";
 
-export default async function RootLayout({
+export default async function AdminLayout({
                                              children
                                          }: Readonly<{ children: React.ReactNode; }>) {
-    const user = await getCurrentUser();
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+    const user = session?.user
 
     return (
-        <AdminGuard userRole={user?.role}>
+        <AdminGuard userRole={user?.role || ''}>
             {/* Мобильная заглушка */}
             <div className="md:hidden min-h-screen bg-gray-50 flex items-center justify-center p-6">
                 <div className="text-center max-w-sm">

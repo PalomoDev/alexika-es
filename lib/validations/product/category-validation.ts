@@ -69,6 +69,30 @@ export const categoryFilterSchema = categoryBaseSchema.pick({
     })).optional(),
 });
 
+const categoryClientSubcategorySchema = z.object({
+    subcategory: z.object({
+        id: z.string(),
+        name: z.string(),
+        slug: z.string(),
+    }),
+});
+export const categoryClientResponseSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    slug: z.string(),
+    _count: z.object({
+        products: z.number().int().min(0),
+    }),
+    categorySubcategories: z.array(categoryClientSubcategorySchema),
+});
+// Схема для ответа функции
+export const categoriesClientApiResponseSchema = z.object({
+    success: z.boolean(),
+    data: z.array(categoryClientResponseSchema).nullable(),
+    message: z.string().nullable(),
+});
+
+
 // Типы
 export type CategoryFullResponse = z.infer<typeof categoryFullResponseSchema>;
 export type CategoryCreate = z.infer<typeof createCategorySchema>;
@@ -76,3 +100,5 @@ export type CategoryUpdate = z.infer<typeof updateCategorySchema>;
 export type CategoryDelete = z.infer<typeof deleteCategorySchema>;
 export type CategoryFilter = z.infer<typeof categoryFilterSchema>;
 export type CategoryImage = z.infer<typeof CategoryImage>;
+export type CategoryClientResponse = z.infer<typeof categoryClientResponseSchema>;
+export type CategoriesClientApiResponse = z.infer<typeof categoriesClientApiResponseSchema>;

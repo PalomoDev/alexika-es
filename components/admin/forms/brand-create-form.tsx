@@ -153,7 +153,7 @@ const CreateBrandForm = () => {
                     <FormField
                         control={form.control}
                         name='imageIds'
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem>
                                 <FormLabel>
                                     Brand Logo

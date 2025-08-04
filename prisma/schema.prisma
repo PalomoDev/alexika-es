@@ -126,6 +126,7 @@ model Category {
   products               Product[] // Товары в этой категории
   categorySubcategories  CategorySubcategory[] // Связь с подкатегориями через промежуточную таблицу
   categorySpecifications CategorySpecification[] // Спецификации для категории
+  Feature                Feature[]
 
   @@index([isActive])
   @@index([sortOrder])
@@ -228,9 +229,8 @@ model Specification {
   description String? // "Максимальное количество спящих мест", "Температура комфортного сна"
   unit        String? // "места", "°C", "кг", "мм", "л"
   type        String // "number", "text", "select", "boolean", "range"
-  options     String[] @default([]) // Варианты для select: ["XS", "S", "M", "L", "XL"] или ["2-сезон", "3-сезон", "4-сезон"]
-  icon        String? // "users", "thermometer", "weight", "ruler" - иконка для отображения
-  category    String? // "size", "comfort", "protection", "material" - группировка спецификаций
+  imageIds    String[] @default([]) @db.Uuid
+  category    String? // Tiends Sacos
   isActive    Boolean  @default(true) // Активна ли спецификация
   sortOrder   Int      @default(0) // Общий порядок сортировки
   createdAt   DateTime @default(now()) @db.Timestamp(6)
@@ -334,21 +334,19 @@ model Feature {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String // "Водостойкий", "Легкий", "Ветрозащитный"
   key         String   @unique // "waterproof", "lightweight", "windproof" - для программного доступа
-  icon        String // "droplet", "feather", "wind" - имя иконки (Lucide, Heroicons и т.д.)
   imageIds    String[] @default([]) @db.Uuid // Массив ID изображений (иконки)
   description String? // "Защита от влаги до 3000мм", "Вес менее 2кг"
-  category    String? // "protection", "comfort", "convenience" - группировка особенностей
-  color       String? // "blue", "green", "orange" - цвет иконки/бейджа
+  categoryId  String?  @db.Uuid // Необязательная связь с категорией
   isActive    Boolean  @default(true) // Активна ли особенность
   sortOrder   Int      @default(0) // Порядок отображения
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @updatedAt @db.Timestamp(6)
 
   // Связи
+  category        Category?        @relation(fields: [categoryId], references: [id])
   productFeatures ProductFeature[] // Товары с этой особенностью
 
   @@index([isActive])
-  @@index([category])
   @@map("features")
 }
 

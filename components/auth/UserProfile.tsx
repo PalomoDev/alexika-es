@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { authClient } from '@/lib/auth-client'
-import { UserRole } from '@/types/better-auth'
+// import { UserRole } from '@/types/better-auth'
 import Image from "next/image";
 
 export default function UserProfile() {
@@ -16,26 +16,26 @@ export default function UserProfile() {
     }
 
     // Функция для изменения роли пользователя (только для админов)
-    const changeUserRole = async (userId: string, newRole: UserRole) => {
-        if (session?.user.role !== 'admin') {
-            alert('У вас нет прав для изменения ролей')
-            return
-        }
-
-        try {
-            await authClient.admin.setRole({
-                userId,
-                role: newRole
-            })
-            
-            // Обновляем сессию
-            router.refresh()
-            alert('Роль успешно изменена')
-        } catch (error) {
-            console.error('Ошибка при изменении роли:', error)
-            alert('Произошла ошибка при изменении роли')
-        }
-    }
+    // const changeUserRole = async (userId: string, newRole: UserRole) => {
+    //     if (session?.user.role !== 'admin') {
+    //         alert('У вас нет прав для изменения ролей')
+    //         return
+    //     }
+    //
+    //     try {
+    //         await authClient.admin.setRole({
+    //             userId,
+    //             role: newRole
+    //         })
+    //
+    //         // Обновляем сессию
+    //         router.refresh()
+    //         alert('Роль успешно изменена')
+    //     } catch (error) {
+    //         console.error('Ошибка при изменении роли:', error)
+    //         alert('Произошла ошибка при изменении роли')
+    //     }
+    // }
 
     if (isPending) {
         return (

@@ -5,7 +5,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSubcategorySchema, SubcategoryUpdate, SubcategoryFullResponse } from '@/lib/validations/product/subcategory-validation';
-import { CategoryFilter } from '@/lib/validations/product/category-validation';
+import { CategoryFullResponse } from '@/lib/validations/product/category-validation';
 import { updateSubcategory } from "@/lib/actions/catalog/subcategory.action";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,7 @@ import { CreatedImageResponse } from '@/lib/validations/product/image-validation
 
 interface EditSubcategoryFormProps {
     data: Omit<SubcategoryFullResponse, '_count'>;
-    categories: CategoryFilter[];
+    categories: CategoryFullResponse[]; // ✅ Исправлено - массив категорий
 }
 
 const EditSubcategoryForm = ({ data, categories }: EditSubcategoryFormProps) => {
@@ -276,7 +276,7 @@ const EditSubcategoryForm = ({ data, categories }: EditSubcategoryFormProps) => 
                     <FormField
                         control={form.control}
                         name='imageIds'
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem>
                                 <FormLabel>
                                     Subcategory Image

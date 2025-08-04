@@ -78,27 +78,24 @@ export const specificationBaseSchema = z.object({
     key: z.string().min(1).max(255),
     description: z.string().nullable(),
     unit: z.string().nullable(),
-    type: z.enum(["number", "text", "select", "boolean", "range"]),
-    options: z.array(z.string()).default([]),
-    icon: z.string().nullable(),
+    type: z.enum(["number", "text"]), // Только два типа
+    imageIds: z.array(uuidSchema),
     category: z.string().nullable(),
-    isActive: z.boolean().default(true),
-    sortOrder: z.number().int().min(0).default(0),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+    isActive: z.boolean(),
+    sortOrder: z.number().int().min(0),
+    createdAt: z.date(), updatedAt: z.date(),
+
 });
 
 export const featureBaseSchema = z.object({
     id: uuidSchema,
     name: z.string().min(1).max(255),
     key: z.string().min(1).max(255),
-    icon: z.string().min(1),
-    imageIds: z.array(uuidSchema).default([]), // Массив UUID изображений (иконки)
+    imageIds: z.array(uuidSchema), // Массив UUID изображений (иконки)
     description: z.string().nullable(),
-    category: z.string().nullable(),
-    color: z.string().nullable(),
-    isActive: z.boolean().default(true),
-    sortOrder: z.number().int().min(0).default(0),
+    categoryId: uuidSchema.nullable(),
+    isActive: z.boolean(),
+    sortOrder: z.number().int().min(0),
     createdAt: z.date(),
     updatedAt: z.date(),
 });

@@ -20,9 +20,10 @@ import {ActionResponse} from "@/types/action.type";
 interface DeleteDialogProps {
     id: string;
     action: (id: string) => Promise<ActionResponse>;
+    title?: string; // Кастомный заголовок для диалога
 }
 
-const DeleteDialog = ({id, action,}: DeleteDialogProps) => {
+const DeleteDialog = ({id, action, title}: DeleteDialogProps) => {
     const [open, setOpen] = useState(false);
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
@@ -55,7 +56,7 @@ const DeleteDialog = ({id, action,}: DeleteDialogProps) => {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone
+                        {title || "This action cannot be undone"}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

@@ -6,8 +6,10 @@ const nextConfig: NextConfig = {
             bodySizeLimit: '10mb'
         }
     },
+
     allowedDevOrigins: ['192.168.0.100'],
     images: {
+        minimumCacheTTL: 60 * 60 * 24 * 30, // 30 дней
         remotePatterns: [
             {
                 protocol: 'https',
@@ -46,6 +48,19 @@ const nextConfig: NextConfig = {
                 pathname: '/**',
             },
         ],
+    },
+    async headers() {
+        return [
+            {
+                source: '/activities/:path*',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=2592000, immutable', // 30 дней
+                    },
+                ],
+            },
+        ]
     },
 
     async rewrites() {

@@ -17,10 +17,10 @@ export default function RegisterForm() {
             password,
             name,
         }, {
-            onRequest: (ctx) => {
+            onRequest: () => {
                 setLoading(true)
             },
-            onSuccess: (ctx) => {
+            onSuccess: () => {
                 // Redirect user to dashboard
                 window.location.href = "/dev"
             },

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {usePathname, useRouter} from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/shared/logo";
 import { useSession, signOut } from "@/lib/auth-client";
@@ -18,17 +18,64 @@ import { navAdminItems } from "@/db/data";
 import {ROUTES} from "@/lib/constants/routes";
 
 const AdminHeader = () => {
-    const router = useRouter();
+
     const pathname = usePathname();
     const { data: session } = useSession();
 
-    const handleSignOut = async () => {
-        await signOut();
-        router.push('/dev')
-
-    };
-
-
+const handleSignOut = async () => {
+    try {
+        await signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    console.log('✅ Sign out successful, redirecting...');
+                    
+                    // Получаем текущий хост для правильной очистки куков
+                    const currentHost = window.location.hostname;
+                    
+                    // Очищаем куки для текущего домена
+                    document.cookie.split(";").forEach((c) => {
+                        const eqPos = c.indexOf("=");
+                        const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+                        
+                        // Очищаем для текущего пути
+                        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+                        
+                        // Очищаем для текущего домена (если это не localhost)
+                        if (currentHost !== 'localhost') {
+                            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${currentHost}`;
+                        }
+                    });
+                    
+                    // Очищаем localStorage и sessionStorage
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
+                    // Перенаправляем на dev страницу
+                    window.location.href = '/dev';
+                },
+                onError: (error) => {
+                    console.error('❌ Sign out error:', error);
+                    // Принудительная очистка при ошибке
+                    document.cookie.split(";").forEach((c) => {
+                        const eqPos = c.indexOf("=");
+                        const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+                        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+                    });
+                    window.location.href = '/dev';
+                }
+            }
+        });
+    } catch (error) {
+        console.error('❌ Sign out failed:', error);
+        // Принудительная очистка при критической ошибке
+        document.cookie.split(";").forEach((c) => {
+            const eqPos = c.indexOf("=");
+            const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+        });
+        window.location.href = '/dev';
+    }
+};
 
     return (
         <header className="bg-white border-b border-gray-200 sticky top-0 z-50">

@@ -63,6 +63,7 @@ export const subcategoryFullSchema = subcategoryBaseSchema.extend({
     })).optional(),
 });
 
+// Полная схема спецификации со всеми связями
 export const specificationFullSchema = specificationBaseSchema.extend({
     productSpecifications: z.array(z.object({
         id: uuidSchema,
@@ -73,11 +74,18 @@ export const specificationFullSchema = specificationBaseSchema.extend({
         id: uuidSchema,
         isRequired: z.boolean(),
         sortOrder: z.number().int(),
-        category: categoryBaseSchema,
+        category: z.object({
+            id: z.string(),
+            name: z.string(),
+            slug: z.string(),
+        }),
     })).optional(),
 });
 
+
+
 export const featureFullSchema = featureBaseSchema.extend({
+    category: categoryBaseSchema.nullable(), // Добавляем полную информацию о категории
     productFeatures: z.array(z.object({
         product: productBaseSchema,
     })).optional(),

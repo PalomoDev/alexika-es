@@ -1,4 +1,4 @@
-// app/api/upload-image/route.ts
+// app/api/update-image/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
 
         // Создаем папку если её нет
         if (!existsSync(uploadDir)) {
-            console.log('📁 Creating upload directory...');
+            console.log('📁 Creating update directory...');
             await mkdir(uploadDir, { recursive: true });
             console.log('✅ Upload directory created');
         }
@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('❌ Upload error:', error);
         return NextResponse.json(
-            { error: 'Failed to upload file' },
+            { error: 'Failed to update file' },
             { status: 500 }
         );
     }

@@ -1,0 +1,1 @@
+export const TRANCAT_MENU = 50

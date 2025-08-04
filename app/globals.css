@@ -2,6 +2,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import "./styles/header.css";
+@import "./styles/main.css";
+
 /* Кастомный вариант для темной темы */
 @custom-variant dark (&:is(.dark *));
 
@@ -118,7 +121,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* Основные цвета страницы */
-  --background: oklch(1 0 0);              /* Белый фон */
+  --background: oklch(0.98 0 0);
   --foreground: oklch(0.145 0 0);          /* Темный текст */
 }
 
@@ -154,7 +157,7 @@
 
   --border: oklch(1 0 0 / 10%);            /* Полупрозрачные границы */
   --input: oklch(1 0 0 / 15%);             /* Полупрозрачный фон инпутов */
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.704 0.191 22.216);
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
@@ -174,9 +177,55 @@
   body {
     @apply bg-background text-foreground;  /* Основные цвета из переменных */
   }
+  @media (min-width: 390px) {
+    .sm\: { }
+  }
+
+  @media (min-width: 768px) {
+    .md\: { }
+  }
+
+  @media (min-width: 1440px) {
+    .lg\: { }
+  }
+
 }
+
+@media (min-width: 1440px) {
+  .custom-large-text {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .custom-container {
+    max-width: 1200px;
+    padding: 2rem;
+  }
+
+  /* Можно переопределить существующие классы */
+  .text-responsive {
+    font-size: 1.25rem;
+  }
+}
+
+@layer components {
+  .text-responsive {
+    @apply text-sm md:text-base lg:text-lg xl:text-xl;
+  }
+
+  .menu-bar-responsive {
+    @apply text-sm font-bold md:text-xs lg:text-base  text-gray-800  transition-colors whitespace-nowrap cursor-pointer;
+  }
+
+  .heading-responsive {
+    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold;
+  }
+}
+
 @layer utilities {
   .wrapper {
-    @apply w-full px-5 md:px-10 mx-auto max-w-[390px] md:max-w-[1480px];
+    @apply w-full px-2 lg:px-10 mx-auto max-w-full md:max-w-[1480px];
   }
+  /* Кастомные breakpoints через arbitrary values */
+
 }

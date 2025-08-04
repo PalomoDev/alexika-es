@@ -1,5 +1,5 @@
 
-const BASE_URL = 'dev/'
+const BASE_URL = '/dev'
 
 
 export const ROUTES = {
@@ -11,13 +11,19 @@ export const ROUTES = {
     },
     PAGES: {
         HOME: `${BASE_URL}`,
-        LOGIN:`${BASE_URL}login`,
-        DASHBOARD: `${BASE_URL}dashboard`,
+        LOGIN:`/login`,
+        REGISTER:`/register`,
+        PROFILE: `${BASE_URL}/dashboard`,
+        CART: `${BASE_URL}/cart`,
+        PRODUCTS: `${BASE_URL}/`,
+        PRODUCT: `${BASE_URL}/product/`,
 
     },
     ADMIN_PAGES: {
         HOME: `/admin`,
         CATALOG: `/admin/catalog`,
+        PRODUCTS: `/admin/products`,
+
     }
 } as const
 

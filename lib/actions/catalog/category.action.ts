@@ -9,7 +9,7 @@ import {
     updateCategorySchema,
     CategoryCreate,
     CategoryUpdate,
-    CategoryFullResponse
+    CategoryFullResponse, CategoriesClientApiResponse
 } from "@/lib/validations/product/category-validation"
 import {ActionResponse} from "@/types/action.type";
 import { ROUTES } from "@/lib/constants/routes";
@@ -105,6 +105,64 @@ export const getCategories = async (): Promise<{
         console.error('Error fetching categories:', error);
         return {
             success: false,
+            message: 'Failed to fetch categories',
+        };
+    }
+};
+
+export const getCategoriesForClient = async (): Promise<CategoriesClientApiResponse> => {
+    try {
+        // Mock data для клиентской части
+        const mockCategories = [
+            {
+                id: "cat-1",
+                name: "Палатки",
+                slug: "palatki",
+                _count: { products: 25 },
+                categorySubcategories: [
+                    {
+                        subcategory: {
+                            id: "sub-1",
+                            name: "2-местные",
+                            slug: "2-mestnye"
+                        }
+                    },
+                    {
+                        subcategory: {
+                            id: "sub-2",
+                            name: "4-местные",
+                            slug: "4-mestnye"
+                        }
+                    }
+                ]
+            },
+            {
+                id: "cat-2",
+                name: "Спальные мешки",
+                slug: "spalnie-meshki",
+                _count: { products: 18 },
+                categorySubcategories: [
+                    {
+                        subcategory: {
+                            id: "sub-3",
+                            name: "Зимние",
+                            slug: "zimnie"
+                        }
+                    }
+                ]
+            }
+        ];
+
+        return {
+            success: true,
+            data: mockCategories,
+            message: null
+        };
+    } catch (error) {
+        console.error('Error fetching categories for client:', error);
+        return {
+            success: false,
+            data: null,
             message: 'Failed to fetch categories',
         };
     }

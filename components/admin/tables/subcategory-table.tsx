@@ -22,7 +22,7 @@ import Link from "next/link";
 import {ROUTES} from "@/lib/constants/routes";
 import DeleteDialog from "@/components/admin/DeleteDialog";
 import {deleteSubcategory} from "@/lib/actions/catalog/subcategory.action";
-import { SubcategoryDelete } from '@/lib/validations/product/subcategory-validation'
+
 
 interface SubcategoriesTableProps {
     data: SubcategoryFullResponse[]

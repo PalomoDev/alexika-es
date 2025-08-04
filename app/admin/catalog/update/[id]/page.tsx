@@ -1,13 +1,14 @@
 import { getBrandById } from "@/lib/actions/catalog/brand.action";
-import { getCategoryById } from "@/lib/actions/catalog/category.action";
+import {getCategories, getCategoryById} from "@/lib/actions/catalog/category.action";
+import { getSubcategoryById } from "@/lib/actions/catalog/subcategory.action";
+import {EditBrandForm, EditCategoryForm, EditSubcategoryForm, EditFeatureForm} from "@/components/admin/forms/index";
 
-// ... другие импорты
-
-import EditBrandForm from "@/components/admin/forms/brand-edit-form";
-import EditCategoryForm from "@/components/admin/forms/category-edit-form";
 
 import ErrorComponent from "@/components/admin/ErrorComponent";
-// ... другие формы
+import { getFeatureById } from "@/lib/actions/catalog/feature.action";
+import {getSpecificationById} from "@/lib/actions/catalog/specification.action";
+import EditSpecificationForm from "@/components/admin/forms/specification-edit-form";
+
 
 interface EditCatalogPageProps {
     params: Promise<{ id: string }>;
@@ -40,8 +41,54 @@ export default async function EditCatalogPage({ params, searchParams }: EditCata
             }
             break;
         }
+        case 'subcategory': {
+            const [subcategoryResponse, categoriesResponse] = await Promise.all([
+                getSubcategoryById(id),
+                getCategories()
+            ]);
 
-        // ... остальные случаи
+            if (!subcategoryResponse.success || !subcategoryResponse.data ||
+                !categoriesResponse.success || !categoriesResponse.data) {
+                const errorMessage = subcategoryResponse.message || categoriesResponse.message || 'Failed to load data';
+                content = <ErrorComponent message={errorMessage} />;
+            } else {
+                content = <EditSubcategoryForm
+                    data={subcategoryResponse.data}
+                    categories={categoriesResponse.data}
+                />;
+            }
+            break
+        }
+        case 'feature': {
+            const [feature, categories] = await Promise.all([
+                getFeatureById(id),
+                getCategories()
+            ]);
+
+            if (!feature.success || !feature.data || !categories.success || !categories.data) {
+                const errorMessage = feature.message || categories.message || 'Failed to load data';
+                content = <ErrorComponent message={errorMessage} />;
+                break;
+            }
+
+            content = <EditFeatureForm data={feature.data} categories={categories.data} />;
+            break;
+        }
+
+        case 'specification': {
+            const [specificationResponse, categoriesResponse] = await Promise.all([
+                getSpecificationById(id),
+                getCategories()
+            ]);
+            if (!specificationResponse.success || !specificationResponse.data ||
+                !categoriesResponse.success || !categoriesResponse.data) {
+                const errorMessage = specificationResponse.message || categoriesResponse.message || 'Failed to load data';
+                content = <ErrorComponent message={errorMessage} />;
+            } else {
+                content = <EditSpecificationForm data={specificationResponse.data} categories={categoriesResponse.data}/>;
+            }
+            break;
+        }
 
         default:
             content = <div>Invalid catalog type: {type}</div>;
