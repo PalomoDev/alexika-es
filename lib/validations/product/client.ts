@@ -20,12 +20,14 @@ export const categoryClientSchema = categoryBaseSchema.pick({
     id: true,
     name: true,
     slug: true,
+    sortOrder: true,
 });
 
 export const brandClientSchema = brandBaseSchema.pick({
     id: true,
     name: true,
     slug: true,
+    sortOrder: true,
 });
 
 export const subcategoryClientSchema = subcategoryBaseSchema.pick({
@@ -33,6 +35,8 @@ export const subcategoryClientSchema = subcategoryBaseSchema.pick({
     name: true,
     slug: true,
     description: true,
+    sortOrder: true,
+    isActivity: true
 });
 
 export const featureClientSchema = featureBaseSchema.pick({

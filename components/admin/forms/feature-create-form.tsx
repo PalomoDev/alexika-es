@@ -96,6 +96,12 @@ const CreateFeatureForm = ({ categories }: CreateFeatureFormProps) => {
                                         <Input
                                             placeholder='Enter feature name'
                                             {...field}
+                                            onChange={(e) => {
+                                                const formattedValue = e.target.value
+                                                    .toLowerCase()
+                                                    .replace(/^\w/, (c) => c.toUpperCase());
+                                                field.onChange(formattedValue);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormDescription>

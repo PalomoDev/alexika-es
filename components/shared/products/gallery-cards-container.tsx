@@ -2,21 +2,23 @@
 import { useState, useMemo, useEffect } from 'react';
 import Breadcrumbs from "@/components/ui/breadcrumps";
 import { PRODUCT_COUNT_GALLERY } from "@/lib/constants";
-import { Product } from "@/lib/validations/product/product-client-validation";
+
 import { useSearchParams } from 'next/navigation';
 import { SortDropdown } from "@/components/shared/products/sort-dropdown";
 import { Pagination } from "@/components/ui/pagination";
 import ProductGalleryCard from "@/components/shared/products/product-gallery-card";
 
-interface GalleryCardsContainerProps {
-    products: Product[] | []
-}
+import useProductFilters from "@/hooks/useProductFilters";
 
-const GalleryCardsContainer = ({ products }: GalleryCardsContainerProps) => {
+const GalleryCardsContainer = () => {
+
+
     const searchParams = useSearchParams();
+    const { filteredProducts } = useProductFilters()
 
-    // Кешируем исходные данные в локальном стейте при первом рендере
-    const [cachedProducts] = useState(products);
+
+
+
 
     // Стейт для текущей страницы
     const [currentPage, setCurrentPage] = useState(1);
@@ -28,23 +30,12 @@ const GalleryCardsContainer = ({ products }: GalleryCardsContainerProps) => {
     const selectedCategory = searchParams.get('category');
     const selectedSubcategories = searchParams.getAll('subcategory');
 
-    // Фильтруем локально кешированные данные
-    const filteredProducts = useMemo(() => {
-        let filtered = cachedProducts;
-        if (selectedCategory) {
-            filtered = filtered.filter(product => product.category.slug === selectedCategory);
-        }
-        if (selectedSubcategories.length > 0) {
-            filtered = filtered.filter(product =>
-                selectedSubcategories.includes(product.subcategory)
-            );
-        }
-        return filtered;
-    }, [cachedProducts, selectedCategory, selectedSubcategories]);
+
 
     // Применяем сортировку к уже отфильтрованному списку
     const sortedProducts = useMemo(() => {
-        const sorted = [...filteredProducts]; // Изменено с let на const
+        const sorted = [...filteredProducts];
+
         switch (sortValue) {
             case 'price-asc':
                 sorted.sort((a, b) => a.price - b.price);
@@ -58,8 +49,11 @@ const GalleryCardsContainer = ({ products }: GalleryCardsContainerProps) => {
             case 'name-desc':
                 sorted.sort((a, b) => b.name.localeCompare(a.name));
                 break;
-            case 'discount':
-                sorted.sort((a, b) => b.discount - a.discount);
+            case 'rating':
+                sorted.sort((a, b) => b.rating - a.rating);
+                break;
+            case 'featured':
+                sorted.sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
                 break;
             default:
                 break;

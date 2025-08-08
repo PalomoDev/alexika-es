@@ -1,13 +1,18 @@
 @layer components {
 
     .main-wrapper {
-        @apply w-full md:max-w-[1480px] mx-auto mt-24 md:mt-30 flex-1 pb-96 px-4;
+        @apply w-full md:max-w-[1480px] mx-auto mt-24 md:mt-30 flex-1 pb-12 px-4;
     }
 
     .filter-container {
-        @apply min-w-1/5 pt-33 pr-10 pl-5
+        @apply min-w-1/5 pt-29 pr-10 pl-5
     }
     .product-gallery-card {
         @apply bg-white min-h-[580px] max-h-[580px] flex flex-col justify-start items-center overflow-hidden;
+    }
+
+    .arrow-box {
+        @apply relative px-6 py-4 mr-1 text-center min-w-[100px];
+        clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
     }
 }

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 
-interface BreadcrumbItem {
+export interface BreadcrumbItem {
     label: string;
     href?: string;
 }

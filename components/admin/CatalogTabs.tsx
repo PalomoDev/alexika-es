@@ -56,7 +56,7 @@ export const CatalogTabs = ({ activeTab, data }: CatalogTabsProps) => {
                 {
                     value: "brands",
                     title: "Marcas",
-                    description: "Gestión de marcas de productos",
+                    description: "Gestión de marcas de products",
                     createName: "marca",
                     isCreated: true,
                     component: <BrandsTable data={data.brands} />
@@ -64,7 +64,7 @@ export const CatalogTabs = ({ activeTab, data }: CatalogTabsProps) => {
                 {
                     value: "categories",
                     title: "Categorías",
-                    description: "Gestión de categorías de productos",
+                    description: "Gestión de categorías de products",
                     isCreated: true,
                     createName: "categoria",
                     component: <CategoriesTable data={data.categories} />
@@ -72,7 +72,7 @@ export const CatalogTabs = ({ activeTab, data }: CatalogTabsProps) => {
                 {
                     value: "subcategories",
                     title: "Subcategorías",
-                    description: "Gestión de subcategorías de productos",
+                    description: "Gestión de subcategorías de products",
                     isCreated: true,
                     createName: "subcategory",
                     component: <SubcategoriesTable data={data.subcategories} />
@@ -80,7 +80,7 @@ export const CatalogTabs = ({ activeTab, data }: CatalogTabsProps) => {
                 {
                     value: "specifications",
                     title: "Especificaciones",
-                    description: "Gestión de características de productos",
+                    description: "Gestión de características de products",
                     isCreated: true,
                     createName: "specifications",
                     component: <SpecificationsTable data={data.specifications} />
@@ -88,7 +88,7 @@ export const CatalogTabs = ({ activeTab, data }: CatalogTabsProps) => {
                 {
                     value: "features",
                     title: "Características",
-                    description: "Gestión de características especiales de productos",
+                    description: "Gestión de características especiales de products",
                     isCreated: true,
                     createName: "features",
                     component: <FeaturesTable data={data.features} />

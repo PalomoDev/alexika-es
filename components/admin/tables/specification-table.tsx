@@ -78,10 +78,10 @@ const SpecificationsTable = ({data}: SpecificationsTableProps) => {
                 ) : (
                     data.map((specification) => (
                         <TableRow key={specification.id}>
-                            <TableCell className="border-r border-l text-center font-medium">
+                            <TableCell className="w-32 text-xs border-r border-l text-center font-medium break-words hyphens-auto">
                                 {specification.name}
                             </TableCell>
-                            <TableCell className="border-r border-l text-center text-xs font-mono">
+                            <TableCell className="border-r max-w-10 overflow-hidden text-ellipsis whitespace-nowrap border-l text-center text-xs font-mono">
                                 {specification.key}
                             </TableCell>
                             <TableCell className="border-r border-l text-center">

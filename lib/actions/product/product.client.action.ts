@@ -2,8 +2,8 @@
 // Обновленная функция в product.client.action.ts
 // ===================================================================
 
-import ProductsGallery from "@/db/products";
-import { ProductApiResponse } from "@/lib/validations/product/product-client-validation";
+
+
 import { ProductClient } from "@/lib/validations/product/client";
 import { memoryCache } from "@/lib/cache/memory-cache";
 import prisma from "@/lib/prisma";
@@ -21,7 +21,14 @@ const formatPrice = (price: number): string => {
     }).format(price);
 };
 
-export default async function getAllProductsForClient(): Promise<ProductApiResponse> {
+interface ProductApiResponse {
+    success: boolean;
+    data: ProductClient[] | null;  // Вместо старого типа
+    message: string | null;
+}
+
+
+export  default async function getAllProductsForClient(): Promise<ProductApiResponse> {
     // Проверяем кеш
     const cached = memoryCache.get<ProductApiResponse>(CACHE_KEY)
     if (cached) {
@@ -31,12 +38,167 @@ export default async function getAllProductsForClient(): Promise<ProductApiRespo
 
     try {
         console.log('⏳ Загружаем данные с сервера...')
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        const products = ProductsGallery
+
+        // Загружаем все продукты из БД с полными связями
+        const products = await prisma.product.findMany({
+            where: {
+                isActive: true
+            },
+            include: {
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                        sortOrder: true
+
+                    }
+                },
+                brand: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                        sortOrder: true
+                    }
+                },
+                productSubcategories: {
+                    include: {
+                        subcategory: {
+                            select: {
+                                id: true,
+                                name: true,
+                                slug: true,
+                                description: true,
+                                sortOrder: true,
+                                isActivity: true
+                            }
+                        }
+                    }
+                },
+                features: {
+                    include: {
+                        feature: {
+                            select: {
+                                id: true,
+                                name: true,
+                                key: true,
+                                imageIds: true,
+                                description: true
+                            }
+                        }
+                    }
+                },
+                specificationValues: {
+                    include: {
+                        specification: {
+                            select: {
+                                id: true,
+                                name: true,
+                                key: true,
+                                type: true,
+                                unit: true,
+                                description: true
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+
+        // Получаем все уникальные imageIds для batch загрузки
+        const allImageIds = products.flatMap(product => product.imageIds)
+        const uniqueImageIds = [...new Set(allImageIds)]
+
+        // Загружаем все изображения одним запросом
+        const images = await prisma.image.findMany({
+            where: {
+                id: { in: uniqueImageIds },
+                isDeleted: false
+            },
+            select: {
+                id: true,
+                url: true,
+                alt: true
+            },
+            orderBy: { sortOrder: 'asc' }
+        })
+
+        // Создаем Map для быстрого поиска изображений по ID
+        const imageMap = new Map(images.map(img => [img.id, img]))
+
+        // Формируем данные в формате ProductClient
+        const mappedProducts: ProductClient[] = products.map(product => {
+            // Получаем изображения для этого продукта
+            const productImages = product.imageIds
+                .map(id => imageMap.get(id))
+                .filter(Boolean) as Array<{id: string, url: string, alt: string | null}>
+
+            return {
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                sku: product.sku,
+                categoryId: product.categoryId,
+                brandId: product.brandId,
+                images: productImages,
+                description: product.description,
+                stock: product.stock,
+                price: Number(product.price),
+                formattedPrice: formatPrice(Number(product.price)),
+                rating: Number(product.rating),
+                inStock: product.stock > 0,
+                isFeatured: product.isFeatured,
+                isActive: product.isActive,
+                // Связи
+                category: product.category ? {
+                    id: product.category.id,
+                    name: product.category.name,
+                    slug: product.category.slug,
+                    sortOrder: product.category.sortOrder
+                } : undefined,
+                brand: product.brand ? {
+                    id: product.brand.id,
+                    name: product.brand.name,
+                    slug: product.brand.slug,
+                    sortOrder: product.brand.sortOrder
+                } : undefined,
+                subcategories: product.productSubcategories?.map(ps => ({
+                    id: ps.subcategory.id,
+                    name: ps.subcategory.name,
+                    slug: ps.subcategory.slug,
+                    description: ps.subcategory.description,
+                    sortOrder: ps.subcategory.sortOrder,
+                    isActivity: ps.subcategory.isActivity
+                })),
+                features: product.features?.map(pf => ({
+                    id: pf.feature.id,
+                    name: pf.feature.name,
+                    key: pf.feature.key,
+                    description: pf.feature.description,
+                    imageIds: pf.feature.imageIds
+                })),
+                specificationValues: product.specificationValues?.map(sv => ({
+                    id: sv.id,
+                    value: sv.value,
+                    specification: {
+                        id: sv.specification.id,
+                        name: sv.specification.name,
+                        key: sv.specification.key,
+                        type: sv.specification.type as "number" | "text",
+                        unit: sv.specification.unit,
+                        description: sv.specification.description
+                    }
+                }))
+            }
+        })
 
         const result: ProductApiResponse = {
             success: true,
-            data: products,
+            data: mappedProducts,
             message: null
         }
 
@@ -51,7 +213,7 @@ export default async function getAllProductsForClient(): Promise<ProductApiRespo
         return {
             success: false,
             data: null,
-            message: 'Error fetching products for client',
+            message: formatError(error)
         }
     }
 }
@@ -72,14 +234,16 @@ export async function getProductBySlugForClient(slug: string): Promise<{
                     select: {
                         id: true,
                         name: true,
-                        slug: true
+                        slug: true,
+                        sortOrder: true
                     }
                 },
                 brand: {
                     select: {
                         id: true,
                         name: true,
-                        slug: true
+                        slug: true,
+                        sortOrder: true
                     }
                 },
                 productSubcategories: {
@@ -89,7 +253,9 @@ export async function getProductBySlugForClient(slug: string): Promise<{
                                 id: true,
                                 name: true,
                                 slug: true,
-                                description: true
+                                description: true,
+                                sortOrder: true,
+                                isActivity: true,
                             }
                         }
                     }
@@ -167,18 +333,22 @@ export async function getProductBySlugForClient(slug: string): Promise<{
             category: product.category ? {
                 id: product.category.id,
                 name: product.category.name,
-                slug: product.category.slug
+                slug: product.category.slug,
+                sortOrder: product.category.sortOrder
             } : undefined,
             brand: product.brand ? {
                 id: product.brand.id,
                 name: product.brand.name,
-                slug: product.brand.slug
+                slug: product.brand.slug,
+                sortOrder: product.brand.sortOrder
             } : undefined,
             subcategories: product.productSubcategories?.map(ps => ({
                 id: ps.subcategory.id,
                 name: ps.subcategory.name,
                 slug: ps.subcategory.slug,
-                description: ps.subcategory.description
+                description: ps.subcategory.description,
+                sortOrder: ps.subcategory.sortOrder,
+                isActivity: ps.subcategory.isActivity
             })),
             features: product.features?.map(pf => ({
                 id: pf.feature.id,

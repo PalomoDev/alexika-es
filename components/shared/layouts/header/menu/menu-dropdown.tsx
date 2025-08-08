@@ -58,7 +58,7 @@ const ImageGrid = ({ items }: { items: UniversalMenuItem[] }) => (
         {items.map((item, index) => (
             <Link
                 key={index}
-                href={item.href}
+                href={`${ROUTES.PAGES.HOME}${item.href}`}
                 className="block group"
             >
                 {item.image && (

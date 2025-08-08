@@ -15,7 +15,7 @@ export const ROUTES = {
         REGISTER:`/register`,
         PROFILE: `${BASE_URL}/dashboard`,
         CART: `${BASE_URL}/cart`,
-        PRODUCTS: `${BASE_URL}/`,
+        PRODUCTS: `${BASE_URL}/products`,
         PRODUCT: `${BASE_URL}/product/`,
 
     },

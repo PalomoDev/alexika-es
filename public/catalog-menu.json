@@ -1,0 +1,190 @@
+{
+  "categories": [
+    {
+      "id": "ee3b65f4-7b34-4941-8415-5a5abc760e81",
+      "name": "Tiendas de campaña",
+      "slug": "tiendas-de-campana",
+      "productCount": 4,
+      "activities": [
+        {
+          "id": "fb0b0059-1020-4068-9b8f-4d6b019dd6a4",
+          "name": "Camping",
+          "slug": "camping",
+          "productCount": 1
+        },
+        {
+          "id": "231bb5a6-c59d-4670-8204-f91416ba6690",
+          "name": "Ciclismo",
+          "slug": "ciclismo",
+          "productCount": 2
+        },
+        {
+          "id": "4acafb11-c0b5-4c33-b4b3-da202836583f",
+          "name": "Extremo",
+          "slug": "extremo",
+          "productCount": 3
+        },
+        {
+          "id": "84ec94d3-76ca-491e-873c-5af0a0a9d5a6",
+          "name": "Senderismo",
+          "slug": "senderismo",
+          "productCount": 3
+        },
+        {
+          "id": "18209861-60f4-44f5-bc0b-403da0a1ad3f",
+          "name": "Trekking",
+          "slug": "trekking",
+          "productCount": 3
+        },
+        {
+          "id": "4fe5d4d1-f372-4f05-b2eb-57efa1ef8cd0",
+          "name": "Viaje",
+          "slug": "viaje",
+          "productCount": 1
+        }
+      ],
+      "brands": [
+        {
+          "id": "1412a0aa-491d-49d8-87a4-9d5282d7d209",
+          "name": "Alexika",
+          "slug": "alexika",
+          "productCount": 3
+        },
+        {
+          "id": "c8918f53-9578-4258-b0e1-c1704beae47a",
+          "name": "Tengu",
+          "slug": "tengu",
+          "productCount": 1
+        }
+      ]
+    },
+    {
+      "id": "3038a025-369a-4d8a-8785-b8be3725b7dd",
+      "name": "Sacos de dormir",
+      "slug": "sacos-de-dormir",
+      "productCount": 6,
+      "activities": [
+        {
+          "id": "fb0b0059-1020-4068-9b8f-4d6b019dd6a4",
+          "name": "Camping",
+          "slug": "camping",
+          "productCount": 3
+        },
+        {
+          "id": "231bb5a6-c59d-4670-8204-f91416ba6690",
+          "name": "Ciclismo",
+          "slug": "ciclismo",
+          "productCount": 3
+        },
+        {
+          "id": "4acafb11-c0b5-4c33-b4b3-da202836583f",
+          "name": "Extremo",
+          "slug": "extremo",
+          "productCount": 2
+        },
+        {
+          "id": "84ec94d3-76ca-491e-873c-5af0a0a9d5a6",
+          "name": "Senderismo",
+          "slug": "senderismo",
+          "productCount": 3
+        },
+        {
+          "id": "18209861-60f4-44f5-bc0b-403da0a1ad3f",
+          "name": "Trekking",
+          "slug": "trekking",
+          "productCount": 3
+        },
+        {
+          "id": "4fe5d4d1-f372-4f05-b2eb-57efa1ef8cd0",
+          "name": "Viaje",
+          "slug": "viaje",
+          "productCount": 3
+        }
+      ],
+      "brands": [
+        {
+          "id": "1412a0aa-491d-49d8-87a4-9d5282d7d209",
+          "name": "Alexika",
+          "slug": "alexika",
+          "productCount": 5
+        },
+        {
+          "id": "c8918f53-9578-4258-b0e1-c1704beae47a",
+          "name": "Tengu",
+          "slug": "tengu",
+          "productCount": 1
+        }
+      ]
+    },
+    {
+      "id": "1fce90e9-f95f-491a-bb13-8a051b2bf19a",
+      "name": "Esterillas y colchonetas",
+      "slug": "esterillas-y-colchonetas",
+      "productCount": 1,
+      "activities": [
+        {
+          "id": "18209861-60f4-44f5-bc0b-403da0a1ad3f",
+          "name": "Trekking",
+          "slug": "trekking",
+          "productCount": 1
+        }
+      ],
+      "brands": [
+        {
+          "id": "1412a0aa-491d-49d8-87a4-9d5282d7d209",
+          "name": "Alexika",
+          "slug": "alexika",
+          "productCount": 1
+        }
+      ]
+    },
+    {
+      "id": "4ef432d7-8db3-4237-8408-3d8b1e54ddcc",
+      "name": "Accesorios",
+      "slug": "accesorios",
+      "productCount": 0,
+      "activities": [],
+      "brands": []
+    },
+    {
+      "id": "71f71dc6-220d-4fa0-9507-821d20ec3ecd",
+      "name": "Ropa técnica",
+      "slug": "ropa-tecnica",
+      "productCount": 0,
+      "activities": [],
+      "brands": []
+    },
+    {
+      "id": "9cc1e75e-4eb2-4285-8bcd-cee2b0451c93",
+      "name": "Raquetas de nieve",
+      "slug": "raquetas-de-nieve",
+      "productCount": 0,
+      "activities": [],
+      "brands": []
+    }
+  ],
+  "allBrands": [
+    {
+      "id": "1412a0aa-491d-49d8-87a4-9d5282d7d209",
+      "name": "Alexika",
+      "slug": "alexika",
+      "totalProducts": 9,
+      "categories": [
+        "ee3b65f4-7b34-4941-8415-5a5abc760e81",
+        "3038a025-369a-4d8a-8785-b8be3725b7dd",
+        "1fce90e9-f95f-491a-bb13-8a051b2bf19a"
+      ]
+    },
+    {
+      "id": "c8918f53-9578-4258-b0e1-c1704beae47a",
+      "name": "Tengu",
+      "slug": "tengu",
+      "totalProducts": 2,
+      "categories": [
+        "ee3b65f4-7b34-4941-8415-5a5abc760e81",
+        "3038a025-369a-4d8a-8785-b8be3725b7dd"
+      ]
+    }
+  ],
+  "generatedAt": "2025-08-06T07:37:23.248Z"
+}

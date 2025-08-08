@@ -37,49 +37,50 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "PRODUCTOS",
             displayType: "text-list" as const,
+            url: '/products',
             items: [
 
 
                 {
                     name: "Tiendas de campaña",
-                    href: "/productos/tiendas",
+                    href: "/tiendas-de-campana?category=tiendas-de-campana",
                     description: "Refugio para todas las aventuras",
                     submenu: [
-                        {name: "Tiendas 1-2 personas", href: "/productos/tiendas/1-2personas"},
-                        {name: "Tiendas 3-4 personas", href: "/productos/tiendas/3-4personas"},
-                        {name: "Tiendas 4 estaciones", href: "/productos/tiendas/4estaciones"},
-                        {name: "Tiendas ultraligeras", href: "/productos/tiendas/ultraligeras"},
+                        {name: "Tiendas 1-2 personas", href: "/products/tiendas/1-2personas"},
+                        {name: "Tiendas 3-4 personas", href: "/products/tiendas/3-4personas"},
+                        {name: "Tiendas 4 estaciones", href: "/products/tiendas/4estaciones"},
+                        {name: "Tiendas ultraligeras", href: "/products/tiendas/ultraligeras"},
                     ]
                 },
                 {
                     name: "Sacos de dormir",
-                    href: "/productos/sacos",
+                    href: "/sacos-de-dormir?category=sacos-de-dormir",
                     description: "Descanso cómodo en la naturaleza",
                     submenu: [
-                        {name: "Sacos de verano", href: "/productos/sacos/verano"},
-                        {name: "Sacos 3 estaciones", href: "/productos/sacos/3estaciones"},
-                        {name: "Sacos de invierno", href: "/productos/sacos/invierno"},
+                        {name: "Sacos de verano", href: "/products/sacos/verano"},
+                        {name: "Sacos 3 estaciones", href: "/products/sacos/3estaciones"},
+                        {name: "Sacos de invierno", href: "/products/sacos/invierno"},
                     ]
                 },
                 {
                     name: "Calzado de montaña",
-                    href: "/productos/calzado",
+                    href: "/products/calzado",
                     description: "Botas y zapatillas técnicas",
                     submenu: [
-                        {name: "Botas de trekking", href: "/productos/calzado/botas-trekking"},
-                        {name: "Zapatillas de trail", href: "/productos/calzado/trail"},
-                        {name: "Botas de montañismo", href: "/productos/calzado/montanismo"},
+                        {name: "Botas de trekking", href: "/products/calzado/botas-trekking"},
+                        {name: "Zapatillas de trail", href: "/products/calzado/trail"},
+                        {name: "Botas de montañismo", href: "/products/calzado/montanismo"},
                     ]
                 },
 
                 {
                     name: "Accesorios",
-                    href: "/productos/accesorios",
+                    href: "/products/accesorios",
                     description: "Complementos esenciales",
                     submenu: [
-                        {name: "Linternas y frontales", href: "/productos/accesorios/iluminacion"},
-                        {name: "Bastones de trekking", href: "/productos/accesorios/bastones"},
-                        {name: "Brújulas y GPS", href: "/productos/accesorios/navegacion"},
+                        {name: "Linternas y frontales", href: "/products/accesorios/iluminacion"},
+                        {name: "Bastones de trekking", href: "/products/accesorios/bastones"},
+                        {name: "Brújulas y GPS", href: "/products/accesorios/navegacion"},
                     ]
                 }
             ]
@@ -89,10 +90,11 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "ACTIVIDADES",
             displayType: "image-grid" as const,
+            url: '/products/actividades',
             items: [
                 {
                     name: "TREKKING",
-                    href: "/actividades/trekking",
+                    href: "/products/actividades?subcategory=trekking",
                     image: "/activities/alpinismo.png",
                     alt: "Personas haciendo trekking en montaña"
                 },
@@ -127,6 +129,7 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "SERVICIO",
             displayType: "cards" as const,
+            url: '/articles',
             items: [
                 {
                     name: "Servicio de reparación",
@@ -170,6 +173,7 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "LA MARCA",
             displayType: "text-list" as const,
+            url: '/la-marca',
             items: [
                 {
                     name: "Sobre nosotros",
@@ -197,13 +201,13 @@ export const footerMenuData: FooterMenuCategory[] = [
     {
         title: 'PRODUCTOS',
         items: [
-            { name: 'Nuevos productos', href: '/productos/nuevos' },
-            { name: 'Tiendas de campaña & Lonas', href: '/productos/mochilas' },
-            { name: 'Artículos de viaje', href: '/productos/articulos-viaje' },
-            { name: 'Sacos de dormir', href: '/productos/tiendas-campana' },
-            { name: 'Cocina exterior', href: '/productos/cocina-exterior' },
-            { name: 'Primeros auxilios', href: '/productos/primeros-auxilios' },
-            { name: 'Accesorios para exteriores', href: '/productos/accesorios' },
+            { name: 'Nuevos products', href: '/products/nuevos' },
+            { name: 'Tiendas de campaña & Lonas', href: '/products/mochilas' },
+            { name: 'Artículos de viaje', href: '/products/articulos-viaje' },
+            { name: 'Sacos de dormir', href: '/products/tiendas-campana' },
+            { name: 'Cocina exterior', href: '/products/cocina-exterior' },
+            { name: 'Primeros auxilios', href: '/products/primeros-auxilios' },
+            { name: 'Accesorios para exteriores', href: '/products/accesorios' },
         ]
     },
     {

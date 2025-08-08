@@ -18,6 +18,7 @@ export type UniversalMenuItem = {
 
 export type MenuSection = {
   title: string;
+  url: string;
   displayType: "text-list" | "image-grid" | "cards";
   items: UniversalMenuItem[];
 };
