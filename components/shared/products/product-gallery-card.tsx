@@ -2,67 +2,79 @@
 import type { ProductClient } from "@/lib/validations/product/client";
 import Image from "next/image";
 import Link from "next/link";
-import {ROUTES} from "@/lib/constants/routes";
+import { ROUTES } from "@/lib/constants/routes";
+import {singularizeCategoryName} from "@/lib/utils/singular";
 
 interface ProductGalleryCardProps {
     product: ProductClient;
 }
 
-const ProductGalleryCard = ({product}: ProductGalleryCardProps) => {
-    // Получаем первое изображение или используем fallback
+const transformCategoryName = (categoryName: string): string => {
+  if (!categoryName) return "";
+  // Срабатываем только если есть союз " y " или " и " (с пробелами вокруг)
+  const conj = /\s+(?:y|и)\s+/i;
+  if (!conj.test(categoryName)) {
+    return categoryName;
+  }
+  const beforeConjunction = categoryName.split(conj)[0] ?? categoryName;
+  const firstWord = beforeConjunction.trim().split(/\s+/)[0] ?? "";
+  if (!firstWord) return categoryName;
+  return singularizeCategoryName(firstWord);
+};
+
+const ProductGalleryCard = ({ product }: ProductGalleryCardProps) => {
     const firstImage = product.images?.[0];
-    const imageUrl = firstImage?.url || '/images/placeholder-product.jpg';
+    const imageUrl = firstImage?.url || "/images/placeholder-product.jpg";
     const imageAlt = firstImage?.alt || product.name;
 
+    const productActivity =
+        product.subcategories?.find((sub) => sub.isActivity)?.name || "";
+
+    const productCategory = product.category?.name || "";
+    const maskedCategory = transformCategoryName(productCategory);
 
     return (
-        <div className={'product-gallery-card'}>
-            <Link href={`${ROUTES.PAGES.PRODUCT}${product.slug}`}>
-                <div className={'relative product-gallery-card-image w-full aspect-[3/4]'}>
+        <div className="product-gallery-card w-full  h-full overflow-hidden">
+            <Link
+                href={`${ROUTES.PAGES.PRODUCT}${product.slug}`}
+                className="h-full w-full flex flex-col justify-between focus:outline-none focus-visible:ring focus-visible:ring-offset-2 px-4"
+                aria-label={product.name}
+            >
+                {/* Изображение */}
+                <div className="relative w-full aspect-square">
                     <Image
                         src={imageUrl}
                         alt={imageAlt}
-                        priority
-                        quality={100}
-                        className="product-gallery-card-image-image object-contain object-center"
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        width={800}
+                        height={800}
+                        quality={80}
+                        className="w-full h-full object-contain object-center"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
-
-                    {/* Показываем статус наличия */}
-                    {!product.inStock && (
-                        <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs rounded">
-                            Нет в наличии
-                        </div>
-                    )}
-
-                    {/* Показываем значок рекомендуемого товара */}
-                    {product.isFeatured && (
-                        <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 text-xs rounded">
-                            Хит
-                        </div>
-                    )}
                 </div>
 
-                <div className={'product-gallery-card-info flex items-start justify-between w-full h-full pt-4 pb-0 px-4'}>
-                    <span className={'uppercase font-bold text-sm'}>{product.name}</span>
-                    <span className={'uppercase font-bold '}>{product.formattedPrice}</span>
-                </div>
+                {/* Контент */}
+                <div className="w-full p-4 flex flex-col justify-between gap-2 h-1/2 pb-16">
+                    <div className={'space-y-2'}>
+                        {/* Название */}
+                        <h3 className="uppercase font-black text-lg text-gray-800 leading-tight line-clamp-2 text-center">
+                            {product.name}
+                        </h3>
 
-                <div className={'flex w-full pb-4 px-4 justify-start'}>
-                    <span className={'w-2/3 font-light text-sm pb-4'}>{product.description}</span>
-                </div>
+                        {/* Активность */}
+                        {productActivity && (
+                            <p className="font-light text-sm text-gray-700 uppercase text-center">{`${maskedCategory} para ${productActivity}`}</p>
+                        )}
+                    </div>
 
-                {/* Дополнительная информация */}
-                <div className={'flex w-full px-4 pb-4 justify-between items-center text-xs text-gray-500'}>
-                    <span>SKU: {product.sku}</span>
-                    {product.rating > 0 && (
-                        <span>★ {product.rating.toFixed(1)}</span>
-                    )}
+                    {/* Цена */}
+                    <span className="uppercase font-black text-base text-gray-800 text-center">
+            {product.formattedPrice}
+          </span>
                 </div>
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default ProductGalleryCard
+export default ProductGalleryCard;

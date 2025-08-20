@@ -119,7 +119,7 @@ const AdminHeader = () => {
                     {/* Кнопка меню и профиль */}
                     <div className="flex items-center space-x-4">
                         {/* Кнопка генерации меню */}
-                        <MenuGeneratorButton/>
+
 
                         {/* Профиль пользователя */}
                         <DropdownMenu>

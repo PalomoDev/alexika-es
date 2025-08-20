@@ -8,7 +8,7 @@
         @apply min-w-1/5 pt-29 pr-10 pl-5
     }
     .product-gallery-card {
-        @apply bg-white min-h-[580px] max-h-[580px] flex flex-col justify-start items-center overflow-hidden;
+        @apply bg-white min-h-[500px] max-h-[500px] flex flex-col justify-start items-center overflow-hidden;
     }
 
     .arrow-box {

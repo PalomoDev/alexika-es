@@ -157,3 +157,7 @@ export const orderItemBaseSchema = z.object({
     slug: z.string().min(1),
     image: urlSchema, // Оставляем для совместимости заказов
 });
+
+export type UserBase = z.infer<typeof userBaseSchema>;
+export type OrderBase = z.infer<typeof orderBaseSchema>;
+export type OrderItemBase = z.infer<typeof orderItemBaseSchema>;

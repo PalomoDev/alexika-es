@@ -34,7 +34,7 @@ export async function productCreate({data}: {data: ProductCreate}): Promise<Acti
             return {
                 success: false,
                 data: null,
-                message: 'Product with this slug already exists'
+                message: `Product with this slug already exists`
             };
         }
 

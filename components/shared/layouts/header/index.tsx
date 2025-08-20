@@ -2,13 +2,15 @@
 import React from 'react';
 import Logo from "@/components/shared/logo";
 import {mockNavigationMenu, oferta} from "@/db/data";
-import {Cart, Oferta, SearchBlock, HamburgerMenu } from "./HeaderElements";
+import {Oferta, SearchBlock, HamburgerMenu } from "./HeaderElements";
 import { UserButton } from "./UserButton";
 import {ROUTES} from "@/lib/constants/routes";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {NavigationMenu} from "@/types/menu.type";
 import MainNavigation from '@/components/shared/layouts/header/menu/main-navigation'
+import Cart from "@/components/shared/layouts/header/cart";
+import {getSessionCart} from "@/lib/actions/cart/cart.action";
 
 
 interface HeaderProps {
@@ -31,6 +33,8 @@ interface TabletDesktopMenuProps extends MenuProps {
 
 
 const Header = async ({ className }: HeaderProps = {}) => {
+
+
     return (
         <header className={cn("header", className)}>
             <div className={'desktop xl:block hidden '}>
@@ -72,7 +76,10 @@ const MobileMenu = ({ oferta, menu }: MenuProps) => {
     );
 };
 
-const TabletDesktopMenu = ({ oferta, menu, isDesktop, className = '' }: TabletDesktopMenuProps) => {
+const TabletDesktopMenu = async ({ oferta, menu, isDesktop, className = '' }: TabletDesktopMenuProps) => {
+    const cartResponse = await getSessionCart()
+    const quantityItemsCart = cartResponse?.data?.items?.reduce((total, item) => total + item.qty, 0) ?? 0;
+
     return (
         <div>
             {/* Оферта + User + Cart */}
@@ -81,7 +88,7 @@ const TabletDesktopMenu = ({ oferta, menu, isDesktop, className = '' }: TabletDe
                     <Oferta oferta={oferta}/>
                     <div className="flex flex-shrink-0 items-center gap-0">
                         <UserButton side={'right'} />
-                        <Cart items={0} />
+                        <Cart items={quantityItemsCart || 0} />
                     </div>
                 </div>
             </div>

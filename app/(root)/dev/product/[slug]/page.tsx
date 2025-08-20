@@ -35,8 +35,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     ];
 
     return (
-        <div className="main-wrapper flex flex-col mt-4 px-4 ">
-            <Breadcrumbs items={breadcrumbs}/>
+        <div className="main-wrapper flex flex-col mt-10 px-4 ">
+            <Breadcrumbs items={breadcrumbs} className={'pl-1'}/>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2">

@@ -1,6 +1,8 @@
 import {ShoppingCart} from "lucide-react";
 import {ProductClient} from "@/lib/validations/product/client";
-import {cn} from "@/lib/utils";
+import {cn, formatNumberWithDecimal} from "@/lib/utils";
+import {AddToCart} from "@/components/shared/products/cart/add-to-cart";
+import {CartItem} from "@/lib/validations/cart/cart-validation";
 
 interface BaseInfoDisplayProps {
     product: ProductClient;
@@ -8,21 +10,32 @@ interface BaseInfoDisplayProps {
 }
 
 const CartButton = ({product, className,}: BaseInfoDisplayProps) => {
+
+
+    const item: CartItem = {
+        id: product.id.toString(),
+        name: product.name,
+        sku: product.sku,
+        price: formatNumberWithDecimal(Number(product.price)).toString(),
+        qty: 1,
+        image: product.images[0]?.url,
+        slug: product.slug,
+        weight: Number(product.specificationValues?.find(sv => sv.specification?.key === 'weight')?.value) || 0,
+    }
+
     return (
-        <div className={cn("w-full ", className)}>
-            <button
-                disabled={!product.inStock}
-                className="w-full flex items-center justify-center space-x-2 bg-brand text-white py-3 px-6 rounded-lg font-medium hover:bg-brand-hover disabled:bg-brand-muted disabled:cursor-not-allowed transition-colors"
-            >
-                <ShoppingCart className="w-5 h-5"/>
-                <span>
-                                {product.inStock ? 'Añadir al carrito' : 'Agotado'}
-                            </span>
-            </button>
+
+            <div className={cn("w-full ", className)}>
+
+                <AddToCart
+                           inStock={product.inStock}
+                           item={item}/>
+
+            </div>
+    )
 
 
-        </div>
-    );
+
 };
 
 export default CartButton;

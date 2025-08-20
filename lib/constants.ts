@@ -8,3 +8,5 @@ export const SALT_ROUNDS = 10;
 export const TRANCAT_MENU = 50
 
 export const PRODUCT_COUNT_GALLERY = 6
+
+export const ORDER_TIMEOUT_MINUTES = 30

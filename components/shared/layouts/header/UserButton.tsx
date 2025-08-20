@@ -121,7 +121,7 @@ export const UserButton = ({ side = 'right' }: UserButtonProps) => {
                                 </Link>
                             )}
                             
-                            <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                            <Link href={`${ROUTES.PAGES.ORDERS}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
                                 <ShoppingBag className="h-5 w-5" />
                                 <span className="font-medium">Mis Pedidos</span>
                             </Link>

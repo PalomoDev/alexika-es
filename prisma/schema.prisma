@@ -377,6 +377,8 @@ model Cart {
   totalPrice    Decimal  @db.Decimal(12, 2) // Общая стоимость
   shippingPrice Decimal  @db.Decimal(12, 2) // Стоимость доставки
   taxPrice      Decimal  @db.Decimal(12, 2) // Налоги
+  totalWeight   Decimal? @db.Decimal(12, 1)
+  setOrder      Boolean? @default(false)
   createdAt     DateTime @default(now()) @db.Timestamp(6)
   updatedAt     DateTime @updatedAt @db.Timestamp(6)
 

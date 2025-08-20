@@ -17,12 +17,15 @@ export const ROUTES = {
         CART: `${BASE_URL}/cart`,
         PRODUCTS: `${BASE_URL}/products`,
         PRODUCT: `${BASE_URL}/product/`,
+        ORDERS: `${BASE_URL}/user/orders`,
 
     },
     ADMIN_PAGES: {
         HOME: `/admin`,
         CATALOG: `/admin/catalog`,
         PRODUCTS: `/admin/products`,
+        ORDER: `/admin/order`,
+
 
     }
 } as const

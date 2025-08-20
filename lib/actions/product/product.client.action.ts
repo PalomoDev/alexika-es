@@ -1,6 +1,4 @@
-// ===================================================================
-// Обновленная функция в product.client.action.ts
-// ===================================================================
+'use server'
 
 
 
@@ -8,6 +6,7 @@ import { ProductClient } from "@/lib/validations/product/client";
 import { memoryCache } from "@/lib/cache/memory-cache";
 import prisma from "@/lib/prisma";
 import { formatError } from "@/lib/utils";
+import { cleanupExpiredOrdersByProductSlug } from '@/lib/actions/orden/orden.action';
 
 const CACHE_KEY = 'products-gallery'
 
@@ -218,12 +217,17 @@ export  default async function getAllProductsForClient(): Promise<ProductApiResp
     }
 }
 
+ // Добавьте правильный путь к функции
+
 export async function getProductBySlugForClient(slug: string): Promise<{
     success: boolean;
     data: ProductClient | null;
     message: string | null;
 }> {
     try {
+        // Очищаем истекшие заказы для этого товара
+        await cleanupExpiredOrdersByProductSlug(slug);
+
         const product = await prisma.product.findUnique({
             where: {
                 slug,

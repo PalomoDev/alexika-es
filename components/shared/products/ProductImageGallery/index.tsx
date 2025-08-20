@@ -34,14 +34,14 @@ export default function ProductImageGallery({ product }: ProductGalleryProps) {
         <div className="space-y-4">
             {/* Сетка 2x2 для первых 4 фото с фиксированной высотой */}
             <div
-                className="grid grid-cols-2 gap-2 h-auto"
+                className="grid grid-cols-2 gap-2 h-auto "
                 role="list"
                 aria-label="Галерея изображений товара"
             >
                 {gridItems.map((img, index) => (
                     <div
                         key={img?.id || `placeholder-${index}`}
-                        className="relative aspect-square overflow-hidden rounded-lg bg-gray-100"
+                        className="relative aspect-square overflow-hidden rounded-lg bg-white"
                         role="listitem"
                     >
                         {img ? (
@@ -54,7 +54,7 @@ export default function ProductImageGallery({ product }: ProductGalleryProps) {
                                 priority
                             />
                         ) : (
-                            <div className="w-full h-full bg-gray-50 border-2 border-dashed border-gray-200" />
+                            <div className="w-full h-full bg-white border-2 border-dashed border-gray-200" />
                         )}
                     </div>
                 ))}

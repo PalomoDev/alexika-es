@@ -17,6 +17,7 @@ const toast = {
         return sonnerToast.success(message, {
             description: options?.description,
             action: options?.action,
+            className: "uppercase font-bold",
         })
     },
 
