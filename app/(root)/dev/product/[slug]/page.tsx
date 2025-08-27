@@ -10,6 +10,9 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import {Venta, VENTAJAS_PRINCIPALES_TIENDAS} from '@/db/ventajas-principales'
+import Image from "next/image";
+import {Card, CardContent} from "@/components/ui/card";
 
 interface ProductPageProps {
     params: Promise<{
@@ -33,6 +36,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {label: acivity, href: `${ROUTES.PAGES.PRODUCTS}/actividades?subcategory=${acivity}`},
         { label: product.name }
     ];
+    const productCategory = product.category?.slug || ''
+    let ventajasPrincipales
+    if (productCategory === 'tiendas-de-campana') { ventajasPrincipales = VENTAJAS_PRINCIPALES_TIENDAS }
+
 
     return (
         <div className="main-wrapper flex flex-col mt-10 px-4 ">
@@ -47,13 +54,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <ProductInformation product={product} className={'md:min-h-[932px]'} />
                 </div>
             </div>
-
+            <div id="description" className="scroll-mt-32" ></div>
             <div className="mt-12 ">
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="single" collapsible className="w-full" defaultValue="description">
                     {/* Descripción */}
                     <AccordionItem value="description">
-                        <AccordionTrigger>
-                            <h2 className="text-xl font-bold text-gray-900">Descripción</h2>
+                        <AccordionTrigger  id="description">
+                            <h2 className="text-xl font-bold text-gray-900"  >Descripción</h2>
                         </AccordionTrigger>
                         <AccordionContent>
                             <div className="prose max-w-none text-gray-700 pt-4">
@@ -69,10 +76,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                 <h2 className="text-xl font-bold text-gray-900">Especificaciones técnicas</h2>
                             </AccordionTrigger>
                             <AccordionContent>
-                                <div className="bg-gray-50 rounded-lg p-6 mt-4">
+                                <div className="bg-white rounded-lg p-6 mt-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {product.specificationValues.map((spec) => (
-                                            <div key={spec.id} className="flex justify-between py-2 border-b border-gray-200 last:border-b-0">
+                                            <div key={spec.id} className="flex justify-between py-2 border-b border-gray-200 ">
                                                <span className="font-medium text-gray-900">
                                                    {spec.specification.name}
                                                </span>
@@ -87,28 +94,58 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         </AccordionItem>
                     )}
 
-                    {/* Subcategorías */}
-                    {product.subcategories && product.subcategories.length > 0 && (
-                        <AccordionItem value="categories">
-                            <AccordionTrigger>
-                                <h2 className="text-xl font-bold text-gray-900">Categorías</h2>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className="flex flex-wrap gap-3 mt-4">
-                                    {product.subcategories.map((subcategory) => (
-                                        <div key={subcategory.id} className="bg-gray-100 rounded-lg p-4">
-                                            <h3 className="font-medium text-gray-900">{subcategory.name}</h3>
-                                            {subcategory.description && (
-                                                <p className="text-sm text-gray-600 mt-1">{subcategory.description}</p>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-                    )}
+
+
+
+                    {ventajasPrincipales && (
+                    <AccordionItem value="features">
+                        <AccordionTrigger>
+                            <h2 className="text-xl font-bold text-gray-900">Ventajas Principales</h2>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 ">
+                                {ventajasPrincipales.map(item => {
+                                    return (
+                                        <FeatureCard key={item.slug} item={item}/>
+                                    )
+                                })}
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                )}
+
+
                 </Accordion>
+
             </div>
         </div>
     );
+
+
+
+}
+
+
+function FeatureCard({ item }: { item: Venta }) {
+    return (
+        <Card className="w-full">
+            <CardContent className="flex px-4 py-0 pl-6">
+                <div className="w-50 h-50 relative rounded-lg overflow-hidden">
+                    <Image
+                        src={item.imageUrl}
+                        alt={item.altImage}
+                        fill
+                        className="object-cover"
+                        sizes="200px"
+                        quality={85}
+                        priority={false}
+                    />
+                </div>
+                <div className="flex flex-col justify-center items-start ml-4 flex-1 ">
+                    <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                    <p className="text-sm text-gray-500 leading-relaxed w-2/3">{item.description}</p>
+                </div>
+            </CardContent>
+        </Card>
+    )
 }

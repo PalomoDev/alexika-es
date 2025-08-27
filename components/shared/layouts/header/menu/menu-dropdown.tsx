@@ -72,7 +72,7 @@ const ImageGrid = ({ items }: { items: UniversalMenuItem[] }) => (
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                            <h3 className="text-white md:text-[10px] lg:text-[16px] font-bold text-center">
+                            <h3 className="text-white md:text-[10px] lg:text-[16px] font-bold text-center uppercase">
                                 {item.name}
                             </h3>
                         </div>
@@ -91,7 +91,7 @@ const Cards = ({ items }: { items: UniversalMenuItem[] }) => (
         {items.map((item, index) => (
             <div key={index} className="block card-size hover:bg-white" >
                 <Link
-                    href={item.href}
+                    href={`${ROUTES.BASE_URL}/${item.href}`}
                     className=""
 
                 >

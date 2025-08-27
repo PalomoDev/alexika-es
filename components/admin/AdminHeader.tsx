@@ -17,7 +17,7 @@ import {
 import { LogOut, Settings, User, ChevronDown } from "lucide-react";
 import { navAdminItems } from "@/db/data";
 import { ROUTES } from "@/lib/constants/routes";
-import MenuGeneratorButton from "@/components/admin/MenuGeneratorButton";
+
 
 
 
@@ -31,7 +31,7 @@ const AdminHeader = () => {
             await signOut({
                 fetchOptions: {
                     onSuccess: () => {
-                        console.log('✅ Sign out successful, redirecting...');
+
 
                         // Получаем текущий хост для правильной очистки куков
                         const currentHost = window.location.hostname;
@@ -62,7 +62,7 @@ const AdminHeader = () => {
                         // Принудительная очистка при ошибке
                         document.cookie.split(";").forEach((c) => {
                             const eqPos = c.indexOf("=");
-                            const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+                            const name = eqPos > -1 ? c.slice(0, eqPos).trim() : c.trim();
                             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
                         });
                         window.location.href = '/dev';
@@ -70,11 +70,11 @@ const AdminHeader = () => {
                 }
             });
         } catch (error) {
-            console.error('❌ Sign out failed:', error);
-            // Принудительная очистка при критической ошибке
+
+            console.log(error)
             document.cookie.split(";").forEach((c) => {
                 const eqPos = c.indexOf("=");
-                const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+                const name = eqPos > -1 ? c.slice(0, eqPos).trim() : c.trim();
                 document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
             });
             window.location.href = '/dev';

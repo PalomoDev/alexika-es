@@ -1,4 +1,4 @@
-// app/dashboard/page.tsx
+// app/dashboard/_page.tsx
 import UserProfile from '@/components/auth/UserProfile'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'

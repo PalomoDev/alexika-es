@@ -3,6 +3,7 @@ import Link from "next/link";
 import { footerMenuData } from "@/db/data";
 import Logo from "@/components/shared/logo";
 import {cn} from "@/lib/utils";
+import {ROUTES} from "@/lib/constants/routes";
 
 interface FooterProps {
     className?: string;
@@ -10,17 +11,17 @@ interface FooterProps {
 
 const Footer = ({className}: FooterProps) => {
     return (
-        <footer className={cn("bg-black text-white py-16", className)}>
+        <footer className={cn("bg-black text-white py-16 mt-24", className)}>
             <div className="wrapper mx-auto px-6">
                 {/* Main Footer Content */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-12 justify-items-center px-48">
                     {footerMenuData.map((category, index) => (
-                        <div key={index} className="space-y-4">
+                        <div key={index} className="space-y-4 border-r-1 border-gray-800 w-full last:border-r-0 pl-12 pr-4">
                             <h3 className="text-sm font-bold tracking-wider mb-6">{category.title}</h3>
                             <ul className="space-y-3 text-sm">
                                 {category.items.map((item, itemIndex) => (
                                     <li key={itemIndex}>
-                                        <Link href={item.href} className="hover:text-gray-300 transition-colors">
+                                        <Link href={`${ROUTES.BASE_URL}${item.href}`} className="hover:text-gray-300 transition-colors">
                                             {item.name}
                                         </Link>
                                     </li>
@@ -57,22 +58,16 @@ const Footer = ({className}: FooterProps) => {
                 {/* Copyright */}
                 <div className="text-center mb-8">
                     <p className="text-sm">
-                        © COPYRIGHT 2025 | <span className="font-bold">ALEXIKA</span> | All Rights Reserved
+                        © COPYRIGHT 2025 | <span className="font-bold">ALEXIKA</span> | Todos los derechos reservados
                     </p>
                 </div>
 
                 {/* Company Description */}
                 <div className="text-center text-sm text-gray-400 leading-relaxed max-w-full mx-auto mb-8">
                     <p>
-                        <strong>Alexika - Equipamiento para exteriores de calidad superior:</strong> El fabricante ruso de equipamiento
-                        para actividades al aire libre Alexika produce tiendas de campaña, sacos de dormir, mochilas,
-                        colchonetas aislantes y accesorios para turismo y camping. Con más de 15 años de experiencia en
-                        el mercado, la marca se ha consolidado como líder en la fabricación de productos duraderos y
-                        funcionales para aventureros y amantes de la naturaleza. Alexika combina tecnologías modernas
-                        con materiales de alta calidad, ofreciendo soluciones innovadoras para todo tipo de actividades
-                        al aire libre, desde senderismo básico hasta expediciones extremas. Todos los productos pasan
-                        rigurosos controles de calidad y pruebas en condiciones reales para garantizar su resistencia y
-                        fiabilidad en los entornos más exigentes.
+                        <strong>La empresa internacional Alexika Sport Group</strong>  fue fundada en 1995 en Portland, Oregón, EE. UU. Un grupo de amigos apasionados por los viajes y el alpinismo comenzó a desarrollar sacos de dormir, tiendas de campaña y equipo de montaña para sus propias expediciones. Muy pronto estos modelos despertaron gran interés entre otros montañistas y, gracias a su amplia experiencia, la compañía presentó su primera colección de sacos de dormir extremos y tiendas de campaña de alto rendimiento.
+
+                        Con el crecimiento del negocio quedó claro que la durabilidad y la comodidad son fundamentales para el trekking y el camping. Por esta razón, el concepto de Alexika es: “Alexika – comodidad en los detalles”. Hoy, Alexika es uno de los principales proveedores de equipo de turismo y aventura —sacos de dormir, tiendas de campaña y colchonetas— en el mercado, utilizando únicamente materiales de alta calidad y combinando solidez con un diseño funcional pensado para viajes al aire libre, alpinismo y camping en cualquier condición.
                     </p>
                 </div>
 

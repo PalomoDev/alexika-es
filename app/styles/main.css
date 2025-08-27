@@ -15,4 +15,9 @@
         @apply relative px-6 py-4 mr-1 text-center min-w-[100px];
         clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
     }
+    .article-wrapper {}
+    .article-header {}
+    .article-container {}
+    .article-card {}
+    .article-card-image {}
 }

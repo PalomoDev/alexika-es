@@ -1,19 +1,17 @@
-import {getSessionCart} from "@/lib/actions/cart/cart.action";
-
 import { auth } from "@/lib/auth";
 import { getUserWithAddress } from "@/lib/actions/user/user.action";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import {ShippingAddressForm} from "@/components/shared/layouts/user/ShippingAddressForm";
+
 import {UserBase} from "@/lib/validations/product/base";
-import PaymentMethodForm from "@/components/shared/layouts/user/PaymentMethodForm";
-import {ShippingAddress} from "@/lib/validations/user/address-validation";
+
+
 import ShippingBillingComponent from "@/components/shared/layouts/cart/ShippingBillingComponent";
 
 
 
 export default async function ShippingBillingPage() {
-    const cartResponse = await getSessionCart();
+
 
 
     // Получаем headers и сессию

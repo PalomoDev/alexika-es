@@ -18,7 +18,7 @@ import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
 import {ROUTES} from "@/lib/constants/routes";
 import {OrderSummary} from "@/lib/validations/cart/order-validation";
-import {productDelete} from "@/lib/actions/product/product.action";
+
 import DeleteDialog from "@/components/admin/DeleteDialog";
 import {orderDelete} from "@/lib/actions/orden/orden.action";
 

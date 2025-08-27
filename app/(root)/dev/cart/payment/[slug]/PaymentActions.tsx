@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { CheckCircle, X, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import {processPaymentSuccess} from "@/lib/actions/orden/orden.action";
 import {ROUTES} from "@/lib/constants/routes";
+import {useTransition} from "react";
+import {CreditCard, X} from "lucide-react";
 
 interface PaymentActionsProps {
     orderId?: string;
@@ -39,7 +39,7 @@ export default function PaymentActions({ orderId }: PaymentActionsProps) {
 
             } catch (error) {
                 toast.error('Error en el pago', {
-                    description: 'No se pudo procesar el pago'
+                    description: `${error} No se pudo procesar el pago`
                 });
             }
         });
@@ -59,7 +59,7 @@ export default function PaymentActions({ orderId }: PaymentActionsProps) {
 
             } catch (error) {
                 toast.error('Error', {
-                    description: 'No se pudo cancelar el pedido'
+                    description: `${error} No se pudo cancelar el pedido`
                 });
             }
         });

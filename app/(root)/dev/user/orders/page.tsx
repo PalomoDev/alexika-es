@@ -1,4 +1,4 @@
-// @flow
+
 import * as React from 'react';
 import {headers} from "next/headers";
 import {auth} from "@/lib/auth";
@@ -6,7 +6,7 @@ import {redirect} from "next/navigation";
 import {OrderSummary} from "@/lib/validations/cart/order-validation";
 import {getUserOrders} from "@/lib/actions/orden/orden.action";
 import ErrorDisplay from "@/components/ErrorDisplay";
-import OrdenTable from "@/components/shared/layouts/orden/orden-table";
+
 import UserOrdenList from "@/app/(root)/dev/user/orders/UserOrdenList";
 
 

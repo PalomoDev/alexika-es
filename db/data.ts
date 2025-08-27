@@ -15,18 +15,42 @@ export const oferta  = "Cambios y devoluciones 30 días"
 
 export const homeSlides = [
     {
-        src: '/slides/banner_1.png',
-        slug: 'banner1',
-        label: 'banner1',
+        src: '/banners/extrim-banner_ver02.png',
+        slug: 'extrim',
+        label: 'alexika extrim',
         id: 'rt123r5',
         name: '',
     },
     {
-        src: '/slides/banner_2.png',
-        slug: 'banner2',
-        label: 'banner2',
+        src: '/banners/trakking-banner.png',
+        slug: 'senderismo',
+        label: 'Foto de Hayato Shin en Unsplash',
         id: 'rt123r6',
         name: '',
+    },
+    {
+        src: '/banners/camping-banner.png',
+        slug: 'camping',
+        label: 'Foto de Ivan Shemereko en Unsplash',
+        id: 'rt12310',
+        name: '',
+    },
+    {
+        src: '/banners/viaje-banner.png',
+        slug: 'viaje',
+        label: 'alexika viaje',
+        id: 'rt123r8',
+        name: '',
+    },
+
+    {
+        src: '/banners/caza-pesca-banner_ver04.png',
+        slug: 'caza-y-pesca',
+        label: 'Foto de Andreas Rønningen en Unsplash',
+        id: 'rt123r9',
+        name: '',
+
+
     },
 ]
 
@@ -46,10 +70,11 @@ export const mockNavigationMenu: NavigationMenu = {
                     href: "/tiendas-de-campana?category=tiendas-de-campana",
                     description: "Refugio para todas las aventuras",
                     submenu: [
-                        {name: "Tiendas 1-2 personas", href: "/products/tiendas/1-2personas"},
-                        {name: "Tiendas 3-4 personas", href: "/products/tiendas/3-4personas"},
-                        {name: "Tiendas 4 estaciones", href: "/products/tiendas/4estaciones"},
-                        {name: "Tiendas ultraligeras", href: "/products/tiendas/ultraligeras"},
+                        {name: "Tiendas extremas", href: "/products/tiendas-de-campana?category=tiendas-de-campana&subcategory=extremo"},
+                        {name: "Tiendas de senderismo", href: "/products/tiendas/3-4personas"},
+                        {name: "Tiendas de camping", href: "/products/tiendas/4estaciones"},
+                        {name: "Tiendas de aventura", href: "/products/tiendas/ultraligeras"},
+                        {name: "Tiendas de caza y pesca", href: "/products/tiendas/ultraligeras"},
                     ]
                 },
                 {
@@ -57,32 +82,36 @@ export const mockNavigationMenu: NavigationMenu = {
                     href: "/sacos-de-dormir?category=sacos-de-dormir",
                     description: "Descanso cómodo en la naturaleza",
                     submenu: [
-                        {name: "Sacos de verano", href: "/products/sacos/verano"},
-                        {name: "Sacos 3 estaciones", href: "/products/sacos/3estaciones"},
-                        {name: "Sacos de invierno", href: "/products/sacos/invierno"},
+                        {name: "Sacos extremas", href: "/products/sacos/verano"},
+                        {name: "Sacos de senderismo", href: "/products/sacos/3estaciones"},
+                        {name: "Sacos de camping", href: "/products/sacos/invierno"},
+                        {name: "Sacos de aventura", href: "/products/sacos/invierno"},
+                        {name: "Sacos de caza y pesca", href: "/products/sacos/invierno"},
                     ]
                 },
                 {
-                    name: "Calzado de montaña",
-                    href: "/products/calzado",
+                    name: "Esterillas y colchonetas",
+                    href: "/esterillas-y-colchonetas?category=esterillas-y-colchonetas",
                     description: "Botas y zapatillas técnicas",
                     submenu: [
-                        {name: "Botas de trekking", href: "/products/calzado/botas-trekking"},
-                        {name: "Zapatillas de trail", href: "/products/calzado/trail"},
-                        {name: "Botas de montañismo", href: "/products/calzado/montanismo"},
+                        {name: "Esterillas extremas", href: "/products/calzado/botas-trekking"},
+                        {name: "Esterillas de senderismo", href: "/products/calzado/trail"},
+                        {name: "Colchonetas de camping", href: "/products/calzado/montanismo"},
+                        {name: "Esterillas y colchonetas de aventura", href: "/products/calzado/montanismo"},
+                        {name: "Esterillas y colchonetas de caza y pesca", href: "/products/calzado/montanismo"},
                     ]
                 },
 
-                {
-                    name: "Accesorios",
-                    href: "/products/accesorios",
-                    description: "Complementos esenciales",
-                    submenu: [
-                        {name: "Linternas y frontales", href: "/products/accesorios/iluminacion"},
-                        {name: "Bastones de trekking", href: "/products/accesorios/bastones"},
-                        {name: "Brújulas y GPS", href: "/products/accesorios/navegacion"},
-                    ]
-                }
+                // {
+                //     name: "Accesorios",
+                //     href: "/products/accesorios",
+                //     description: "Complementos esenciales",
+                //     submenu: [
+                //         {name: "Linternas y frontales", href: "/products/accesorios/iluminacion"},
+                //         {name: "Bastones de trekking", href: "/products/accesorios/bastones"},
+                //         {name: "Brújulas y GPS", href: "/products/accesorios/navegacion"},
+                //     ]
+                // }
             ]
         },
 
@@ -93,34 +122,34 @@ export const mockNavigationMenu: NavigationMenu = {
             url: '/products/actividades',
             items: [
                 {
-                    name: "TREKKING",
-                    href: "/products/actividades?subcategory=trekking",
-                    image: "/activities/alpinismo.png",
-                    alt: "Personas haciendo trekking en montaña"
+                    name: "Extremo",
+                    href: "/products/actividades?subcategory=extremo",
+                    image: "/menu/activity/extremo.png",
+                    alt: "Foto de Xavier von Erlach en Unsplash"
                 },
                 {
-                    name: "SENDERISMO",
-                    href: "/actividades/senderismo",
-                    image: "/activities/escalada.png",
-                    alt: "Senderismo por senderos naturales"
+                    name: "Senderismo",
+                    href: "/products/actividades?subcategory=senderismo",
+                    image: "/menu/activity/senderismo.png",
+                    alt: "Foto de Austin Ban en Unsplash"
                 },
                 {
-                    name: "VIAJE",
-                    href: "/actividades/viaje",
-                    image: "/activities/pescadores.png",
-                    alt: "Aventuras de viaje"
+                    name: "Camping",
+                    href: "/products/actividades?subcategory=camping",
+                    image: "/menu/activity/camping.png",
+                    alt: "Foto de Lesly Derksen en Unsplash"
                 },
                 {
-                    name: "CAMPING",
-                    href: "/actividades/camping",
-                    image: "/activities/senderismo.png",
-                    alt: "Camping al aire libre"
+                    name: "Aventura",
+                    href: "/products/actividades?subcategory=aventura",
+                    image: "/menu/activity/aventura.png",
+                    alt: "Foto de Filip Mroz en Unsplash"
                 },
                 {
-                    name: "CICLISMO",
-                    href: "/actividades/ciclismo",
-                    image: "/activities/trail-running.png",
-                    alt: "Ciclismo de montaña"
+                    name: "Pesca y caza",
+                    href: "/products/actividades?subcategory=pesca-y-caza",
+                    image: "/menu/activity/pesca.png",
+                    alt: "Foto de Robson Hatsukami Morgan en Unsplash"
                 }
             ]
         },
@@ -133,7 +162,7 @@ export const mockNavigationMenu: NavigationMenu = {
             items: [
                 {
                     name: "Servicio de reparación",
-                    href: "/servicio/reparacion",
+                    href: "/alexika-traveler-club/reparacion",
                     image: "/activities/trail-running.png",
                     alt: "Servicio de reparación de equipos",
                     description: "Servicio sostenible: reparar en lugar de tirar"
@@ -201,67 +230,68 @@ export const footerMenuData: FooterMenuCategory[] = [
     {
         title: 'PRODUCTOS',
         items: [
-            { name: 'Nuevos products', href: '/products/nuevos' },
+            // { name: 'Nuevos products', href: '/products/nuevos' },
             { name: 'Tiendas de campaña & Lonas', href: '/products/mochilas' },
             { name: 'Artículos de viaje', href: '/products/articulos-viaje' },
             { name: 'Sacos de dormir', href: '/products/tiendas-campana' },
-            { name: 'Cocina exterior', href: '/products/cocina-exterior' },
-            { name: 'Primeros auxilios', href: '/products/primeros-auxilios' },
-            { name: 'Accesorios para exteriores', href: '/products/accesorios' },
+            // { name: 'Cocina exterior', href: '/products/cocina-exterior' },
+            // { name: 'Primeros auxilios', href: '/products/primeros-auxilios' },
+            // { name: 'Accesorios para exteriores', href: '/products/accesorios' },
         ]
     },
     {
         title: 'ACTIVIDADES',
         items: [
-            { name: 'Trekking', href: '/actividades/trekking' },
-            { name: 'Senderismo', href: '/actividades/senderismo' },
-            { name: 'Camping', href: '/actividades/camping' },
-            { name: 'Ciclismo', href: '/actividades/ciclismo' },
+            { name: 'Extremo', href: '/products/actividades?subcategory=extremo' },
+            { name: 'Senderismo', href: '/products/actividades?subcategory=senderismo' },
+            { name: 'Camping', href: '/products/actividades?subcategory=camping' },
+            { name: 'Aventura', href: '/products/actividades?subcategory=aventura' },
+            { name: 'Pesca y Caza', href: '/products/actividades?subcategory=pesca-y-caza' },
         ]
     },
-    {
-        title: 'ESPECIALES',
-        items: [
-            { name: 'Trekking', href: '/especiales/trekking' },
-            { name: 'Backpacking', href: '/especiales/backpacking' },
-            { name: 'Hiking', href: '/especiales/hiking' },
-            { name: 'Bushcrafting', href: '/especiales/bushcrafting' },
-            { name: 'Everyday', href: '/especiales/everyday' },
-            { name: 'Colección Hike Pack', href: '/especiales/hike-pack' },
-            { name: 'Colección Bushcraft', href: '/especiales/bushcraft' },
-            { name: 'Acero inoxidable', href: '/especiales/acero-inoxidable' },
-            { name: 'La nueva serie de viajes', href: '/especiales/serie-viajes' },
-            { name: 'La colección de tiendas', href: '/especiales/coleccion-tiendas' },
-            { name: 'El buscador de tiendas', href: '/especiales/buscador-tiendas' },
-            { name: 'Sin miedo al robo de datos', href: '/especiales/seguridad-datos' },
-        ]
-    },
+    // {
+    //     title: 'ESPECIALES',
+    //     items: [
+    //         { name: 'Trekking', href: '/especiales/trekking' },
+    //         { name: 'Backpacking', href: '/especiales/backpacking' },
+    //         { name: 'Hiking', href: '/especiales/hiking' },
+    //         { name: 'Bushcrafting', href: '/especiales/bushcrafting' },
+    //         { name: 'Everyday', href: '/especiales/everyday' },
+    //         { name: 'Colección Hike Pack', href: '/especiales/hike-pack' },
+    //         { name: 'Colección Bushcraft', href: '/especiales/bushcraft' },
+    //         { name: 'Acero inoxidable', href: '/especiales/acero-inoxidable' },
+    //         { name: 'La nueva serie de viajes', href: '/especiales/serie-viajes' },
+    //         { name: 'La colección de tiendas', href: '/especiales/coleccion-tiendas' },
+    //         { name: 'El buscador de tiendas', href: '/especiales/buscador-tiendas' },
+    //         { name: 'Sin miedo al robo de datos', href: '/especiales/seguridad-datos' },
+    //     ]
+    // },
     {
         title: 'SERVICIO',
         items: [
-            { name: 'Servicio de reparación', href: '/servicio/reparacion' },
-            { name: 'Consejos para mochileros', href: '/servicio/consejos-mochileros' },
-            { name: 'Primeros auxilios', href: '/servicio/primeros-auxilios' },
-            { name: 'Consejos para la tienda', href: '/servicio/consejos-tienda' },
+            { name: 'Como elegir una tienda de campaña', href: '/servicio/consejos-tienda' },
+            { name: 'Como para elegir un saco de dormir', href: '/servicio/consejos-saco' },
+            { name: 'Como para elegir una esterilla', href: '/servicio/consejos-esterilla' },
             { name: 'Materiales', href: '/servicio/materiales' },
-            { name: 'Tabla de tallas', href: '/servicio/tallas' },
             { name: 'FAQ', href: '/servicio/faq' },
         ]
     },
     {
         title: 'LA COMPAÑÍA',
         items: [
-            { name: 'La marca', href: '/compania/marca' },
-            { name: 'Traceability by Tatonka', href: '/compania/traceability' },
-            { name: 'Socio y fabricante', href: '/compania/socios' },
-            { name: 'Socio colaborador', href: '/compania/colaboradores' },
-            { name: 'Declaración sobre accesibilidad', href: '/compania/accesibilidad' },
-            { name: 'Tatonka Community', href: '/compania/community' },
-
+            { name: 'Sobre la marca', href: '/compania/marca' },
+            { name: 'Alexika Travel Club', href: '/compania/travel-club' },
+            { name: 'Garantías', href: '/compania/garantias' },
+            { name: 'Contacto', href: '/compania/contacto' },
+            { name: 'Aviso legal', href: '/compania/aviso-legal' },
+            { name: 'Política de privacidad', href: '/compania/politica-privacidad' },
+            { name: 'Términos y condiciones generales', href: '/compania/terminos-condiciones' },
+            { name: 'Derecho de desistimiento', href: '/compania/desistimiento' },
+            { name: 'Cuidado del producto', href: '/compania/cuidado-producto' },
         ]
     }
 ];
 
-export const usando = ['extrim', 'trekking', 'camping', 'senderismo', 'montañismo', 'supervivencia', 'bushcraft', 'expediciones', 'outdoor', 'aventura', 'caza', 'pesca']
+export const usando = ['Extreme', 'trekking', 'camping', 'senderismo', 'montañismo', 'supervivencia', 'bushcraft', 'expediciones', 'outdoor', 'aventura', 'caza', 'pesca']
 
 

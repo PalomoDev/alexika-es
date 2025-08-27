@@ -19,7 +19,7 @@ export const ProductDescription = ({product, className,}: BaseInfoDisplayProps) 
                 {remainingWords && <span> {remainingWords}</span>}
                 {hasMoreContent && (
                     <a
-                    href="#full-description"
+                    href="#description"
                     className="text-sm pl-2 text-brand-hover"
                     >
                     Ver más...

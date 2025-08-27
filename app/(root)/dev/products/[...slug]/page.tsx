@@ -1,5 +1,4 @@
 import {Suspense} from "react";
-import GalleryFilter from "@/components/shared/products/filters/gallery-filter-with-locked";
 import GalleryCardsContainer from "@/components/shared/products/gallery-cards-container";
 import GalleryFilterAuto from '@/components/shared/products/filters/GalleryFilterAuto';
 
@@ -47,10 +46,10 @@ const getLockedFilters = (slug: string[]): LockedFilters | undefined => {
     }
 };
 
-export default async function ProductosPage({ params, searchParams }: PageProps) {
+export default async function ProductosPage({ params }: PageProps) {
     const { slug } = await params;
 
-    const resolvedSearchParams = await searchParams;
+
 
     // Определяем заблокированные фильтры на основе URL
     const lockedFilters = getLockedFilters(slug);

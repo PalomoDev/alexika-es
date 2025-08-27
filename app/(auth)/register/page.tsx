@@ -1,4 +1,4 @@
-// app/register/page.tsx
+// app/register/_page.tsx
 import RegisterForm from '@/components/auth/RegisterForm'
 
 export default function RegisterPage() {

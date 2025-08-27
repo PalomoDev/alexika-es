@@ -2,7 +2,6 @@
 import {getSessionCart} from "@/lib/actions/cart/cart.action";
 import { CART_ZERO } from "@/lib/constants/cart-zero";
 import { auth } from "@/lib/auth";
-import { getUserWithAddress } from "@/lib/actions/user/user.action";
 import { headers } from "next/headers";
 import {CartTable} from "@/components/shared/layouts/cart/CartTable";
 
@@ -14,11 +13,7 @@ export default async function HomePage() {
         headers: headersList
     });
 
-    let userData = null;
-    if (session?.user?.id) {
-        const userResponse = await getUserWithAddress(session.user.id);
-        userData = userResponse.data;
-    }
+
 
     return (
         <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -27,7 +22,11 @@ export default async function HomePage() {
                     <CartTable
                         cart={cartResponse.data || CART_ZERO}
                     />
-
+                    {!session?.user?.id && (
+                        <p className="mt-6 text-sm text-red-600 font-medium">
+                            Para continuar con tu carrito y finalizar la compra, debes iniciar sesión.
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

@@ -18,6 +18,7 @@ export const ROUTES = {
         PRODUCTS: `${BASE_URL}/products`,
         PRODUCT: `${BASE_URL}/product/`,
         ORDERS: `${BASE_URL}/user/orders`,
+        ARTICLES: `${BASE_URL}/alexika-traveler-club`,
 
     },
     ADMIN_PAGES: {
