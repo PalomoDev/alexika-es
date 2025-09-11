@@ -1,7 +1,9 @@
-// app/dashboard/_page.tsx
+
 import UserProfile from '@/components/auth/UserProfile'
+
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
+import {getUserWithAddress} from "@/lib/actions/user/user.action";
 
 
 
@@ -10,14 +12,18 @@ export default async function DashboardPage() {
     const session = await auth.api.getSession({
         headers: await headers()
     })
-    console.log(session)
+    const userId = session?.user.id;
+
+    if (!userId) return null;
+
+    const userDataResponse = await getUserWithAddress(userId)
 
 
     return (
-        <div className="py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-3xl font-bold text-center mb-8">Панель управления</h1>
-                <UserProfile />
+        <div className="main-wrapper px-0 py-12 mt-12">
+            <div className="w-full mx-auto">
+                <h1 className="text-3xl font-bold text-left mb-8">Panel de gestión de usuario</h1>
+                {userDataResponse.data && <UserProfile user={userDataResponse.data}/>}
             </div>
         </div>
     )

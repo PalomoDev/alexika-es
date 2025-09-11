@@ -18,19 +18,21 @@ import {ActionResponse} from "@/types/action.type";
 
 
 interface DeleteDialogProps {
-    id: string;
-    action: (id: string) => Promise<ActionResponse>;
+    id?: string;
+    slug?: string;
+    action: (id: string) => Promise<ActionResponse<string | undefined | null>>
     title?: string; // Кастомный заголовок для диалога
 }
 
-const DeleteDialog = ({id, action, title}: DeleteDialogProps) => {
+const DeleteDialog = ({id='ui', slug='', action, title}: DeleteDialogProps) => {
     const [open, setOpen] = useState(false);
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
 
     const handleDeleteClick = () => {
         startTransition(async () => {
-            const res = await action(id);
+            const target = id === 'ui' ? slug : id;
+            const res = await action(target);
 
             if (!res.success) {
                 toast.error('Ошибка!', {

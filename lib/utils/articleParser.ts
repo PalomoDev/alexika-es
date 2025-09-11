@@ -5,7 +5,6 @@ export interface ParsedArticle {
     subtitle?: string;
     heroImage?: {
         filename: string;
-        url: string;
         alt: string;
     };
     intro?: string;
@@ -14,7 +13,6 @@ export interface ParsedArticle {
         paragraphs: string[];
         images?: Array<{
             filename: string;
-            url: string;
             alt: string;
             caption?: string;
         }>;
@@ -26,19 +24,32 @@ export interface ParsedArticle {
 }
 
 export interface ArticleData {
-    content: string;
-    images: Record<string, {
-        id: string;
-        filename: string;
-        url: string;
-        alt: string;
-    }>;
+    contentRAW: string;
+
 }
 
-export const parseArticleContent = (articleData: ArticleData): ParsedArticle => {
-    const { content, images } = articleData;
+const stripTags = (input: string): string => {
+    // список тегов, которые вырезаем
+    const tagsToStrip = ['strong', 'em'];
 
-    console.log('Starting to parse article content...');
+    let output = input;
+    tagsToStrip.forEach(tag => {
+        const regex = new RegExp(`<${tag}[^>]*>(.*?)</${tag}>`, 'gi');
+        output = output.replace(regex, '$1'); // оставляем только содержимое
+    });
+    output = output.replace(/\*\*(.*?)\*\*/g, '$1');
+
+    return output;
+};
+
+export const parseArticleContent = (articleData?: ArticleData): ParsedArticle | null => {
+    if (!articleData) { return null;}
+    const { contentRAW } = articleData;
+    const content = stripTags(contentRAW);
+    const images = parseArticleImages(content);
+
+
+
 
     // Извлекаем заголовок
     const titleMatch = content.match(/<article-title>([\s\S]*?)<\/article-title>/);
@@ -59,7 +70,6 @@ export const parseArticleContent = (articleData: ArticleData): ParsedArticle => 
         if (imageData) {
             heroImage = {
                 filename,
-                url: imageData.url,
                 alt: imageData.alt
             };
         }
@@ -121,7 +131,6 @@ export const parseArticleContent = (articleData: ArticleData): ParsedArticle => 
 
                 sectionImages.push({
                     filename,
-                    url: imageData.url,
                     alt: imageData.alt,
                     caption
                 });
@@ -178,3 +187,32 @@ export const parseArticleContent = (articleData: ArticleData): ParsedArticle => 
 
     return result;
 };
+
+
+function parseArticleImages(content: string) {
+    const imagesBlockMatch = content.match(/<article-images>([\s\S]*?)<\/article-images>/);
+
+    if (!imagesBlockMatch) return {};
+
+    const imagesContent = imagesBlockMatch[1];
+    const imageMatches = imagesContent.match(/<image>([\s\S]*?)<\/image>/g);
+
+    if (!imageMatches) return {};
+
+    const images: Record<string, { filename: string; alt: string }> = {};
+
+    imageMatches.forEach(imageBlock => {
+        const filenameMatch = imageBlock.match(/<filename>(.*?)<\/filename>/);
+        const altMatch = imageBlock.match(/<alt>(.*?)<\/alt>/);
+
+        if (filenameMatch) {
+            const filename = filenameMatch[1].trim();
+            images[filename] = {
+                filename: filename,
+                alt: altMatch ? altMatch[1].trim() : ''
+            };
+        }
+    });
+
+    return images;
+}

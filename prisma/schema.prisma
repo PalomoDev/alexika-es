@@ -461,3 +461,44 @@ model Review {
   @@index([isApproved])
   @@map("reviews")
 }
+
+// ========================================
+// ARTICLE MODELS - Модели статей
+// ========================================
+
+model Article {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String // "Cómo no perderse en el bosque"
+  subtitle    String // "reglas de seguridad para excursionistas"
+  slug        String  @unique // "como-no-perderse-en-el-bosque"
+  content     String  @db.Text // Полный текст с кастомной markdown разметкой
+  excerpt     String // Краткое описание для превью
+  isPublished Boolean @default(false) // Опубликована ли статья
+  imageFolder String? // "/uploads/articles/como-no-perderse/" или "/uploads/articles/"
+  coverImage  String? @default("")
+
+  // SEO поля (необязательные)
+  seoTitle       String? // Заголовок для поисковиков
+  seoDescription String? // Описание для метатегов
+
+  // Упрощенные связи
+  category String? // "CONSEJOS", "GUIAS" и т.д.
+  author   String? // Имя автора строкой
+
+  // Метаданные (необязательные)
+  tags       String[] @default([]) // Массив тегов
+  readTime   Int? // Время чтения в минутах
+  viewCount  Int?     @default(0) // Количество просмотров
+  isFeatured Boolean? @default(false) // Рекомендуемая статья
+
+  // Временные метки
+  publishedAt DateTime? @db.Timestamp(6) // Когда опубликована
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt @db.Timestamp(6)
+
+  @@index([isPublished])
+  @@index([isFeatured])
+  @@index([category])
+  @@index([slug])
+  @@map("articles")
+}

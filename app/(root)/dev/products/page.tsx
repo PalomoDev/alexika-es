@@ -1,4 +1,4 @@
-// _page.tsx
+// _page.txt
 'use server'
 import { Suspense } from 'react'
 import GalleryFilter from "@/components/shared/products/filters/gallery-filter-with-locked";

@@ -1,7 +1,7 @@
 @layer components {
 
     .main-wrapper {
-        @apply w-full md:max-w-[1480px] mx-auto mt-24 md:mt-30 flex-1 pb-12 px-4;
+        @apply w-full md:max-w-[1480px] mx-auto mt-24 md:mt-30 flex-1 pb-12 px-4 ;
     }
 
     .filter-container {

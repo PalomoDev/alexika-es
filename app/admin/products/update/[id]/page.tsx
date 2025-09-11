@@ -1,4 +1,4 @@
-// app/admin/products/edit/[id]/_page.tsx
+// app/admin/products/edit/[id]/_page.txt
 
 import { notFound } from "next/navigation";
 import { getProductById } from "@/lib/actions/product/product.action";

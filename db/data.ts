@@ -4,12 +4,13 @@ export const navAdminItems = [
     { href: "/admin", label: "Dashboard", exact: true },
     { href: "/admin/products", label: "Productos" },
     { href: "/admin/catalog", label: "Catálogo" },
+    { href: "/admin/articles", label: "Artículos" },
     { href: "/admin/order", label: "Pedidos" },
     { href: "/admin/users", label: "Usuarios" },
 ];
 
 
-export const oferta  = "Cambios y devoluciones 30 días"
+export const oferta  = "Alexika – Comodidad en los detalles."
 
 
 
@@ -162,7 +163,7 @@ export const mockNavigationMenu: NavigationMenu = {
             items: [
                 {
                     name: "Servicio de reparación",
-                    href: "/alexika-traveler-club/reparacion",
+                    href: "/alexika-traveler-club/como-elegir-la-tienda-de-campana-ideal-para-tus-aventuras",
                     image: "/activities/trail-running.png",
                     alt: "Servicio de reparación de equipos",
                     description: "Servicio sostenible: reparar en lugar de tirar"
@@ -175,11 +176,11 @@ export const mockNavigationMenu: NavigationMenu = {
                     description: "El sistema adecuado para cada área de uso y cada persona"
                 },
                 {
-                    name: "Consejos para mochileros",
-                    href: "/servicio/consejos-mochileros",
-                    image: "/activities/trail-running.png",
-                    alt: "Consejos para mochileros",
-                    description: "De esta forma puede ajustar nuestras mochilas individualmente"
+                    name: "Guía del Viajero",
+                    href: "/service/guia-del-viajero",
+                    image: "/service/ashley-knedler-Pf5Pj7A5ddA-unsplash 1.png",
+                    alt: "Foto de Ashley Knedler en Unsplash",
+                    description: "Consejos esenciales para tu primera aventura"
                 },
                 {
                     name: "Primeros auxilios",
@@ -189,11 +190,11 @@ export const mockNavigationMenu: NavigationMenu = {
                     description: "Botiquines profesionales para sus actividades al aire libre"
                 },
                 {
-                    name: "Primeros auxilios",
-                    href: "/servicio/primeros-auxilios",
-                    image: "/activities/trail-running.png",
-                    alt: "Kit de primeros auxilios",
-                    description: "Botiquines profesionales para sus actividades al aire libre"
+                    name: "Cuidado del Equipo",
+                    href: "/service/care",
+                    image: "/service/annie-spratt-zH4OX1HSIaE-unsplash 1.png",
+                    alt: "Foto de Annie Spratt en Unsplash",
+                    description: "Guías de mantenimiento y uso correcto para tiendas y esterillas"
                 }
             ]
         },
@@ -206,15 +207,15 @@ export const mockNavigationMenu: NavigationMenu = {
             items: [
                 {
                     name: "Sobre nosotros",
-                    href: "/tatonka/sobre-nosotros"
+                    href: "/sobre"
                 },
                 {
                     name: "Historia de la marca",
-                    href: "/tatonka/historia"
+                    href: "/historia"
                 },
                 {
                     name: "Sostenibilidad",
-                    href: "/tatonka/sostenibilidad"
+                    href: "/sostenibilidad"
                 },
                 {
                     name: "Contacto",
@@ -293,5 +294,7 @@ export const footerMenuData: FooterMenuCategory[] = [
 ];
 
 export const usando = ['Extreme', 'trekking', 'camping', 'senderismo', 'montañismo', 'supervivencia', 'bushcraft', 'expediciones', 'outdoor', 'aventura', 'caza', 'pesca']
+
+export const ArticlesCategories = ['todos', 'guías', 'consejos', 'destinos', 'equipamiento', 'experiencias']
 
 

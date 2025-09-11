@@ -22,7 +22,7 @@ const TextList = ({ items }: { items: UniversalMenuItem[] }) => (
             <React.Fragment key={index}>
                 <div className="flex flex-col">
                     <Link
-                        href={`${ROUTES.PAGES.PRODUCTS}${item.href}`}
+                        href={`${ROUTES.PAGES.HOME}${item.href}`}
                         className="block pl-0 pb-0 text-gray-700 hover:text-black hover:bg-gray-50 rounded transition-colors font-medium"
                     >
                         {item.name}

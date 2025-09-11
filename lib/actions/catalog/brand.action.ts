@@ -14,7 +14,7 @@ import {
 
 type ActionResponse<T = undefined> = {
     success: boolean;
-    data?: T;
+    data?: T | null;
     message?: string;
 };
 
