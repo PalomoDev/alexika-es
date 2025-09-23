@@ -68,27 +68,4 @@ export const Oferta = ({oferta} : {oferta: string}) => {
     )
 }
 
-export const SearchBlock = ({ size }: { size: "full" | "icon" }) => {
-    return (
-        <>
-            {size === "full" ? (
-                <div className="flex-1 max-w-md min-w-80">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="Buscar un producto, etc..."
-                            className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <Button variant="ghost" size="icon" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                            <Search className="w-5 h-5" />
-                        </Button>
-                    </div>
-                </div>
-            ) : (
-                <Button variant="ghost" size="icon" className="relative flex items-end pb-1 justify-center">
-                    <Search className="w-6 h-6" />
-                </Button>
-            )}
-        </>
-    );
-};
+

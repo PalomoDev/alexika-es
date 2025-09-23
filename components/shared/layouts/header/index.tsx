@@ -2,7 +2,7 @@
 import React from 'react';
 import Logo from "@/components/shared/logo";
 import {mockNavigationMenu, oferta} from "@/db/data";
-import {Oferta, SearchBlock, HamburgerMenu } from "./HeaderElements";
+import {Oferta, HamburgerMenu } from "./HeaderElements";
 import { UserButton } from "./UserButton";
 import {ROUTES} from "@/lib/constants/routes";
 import Link from "next/link";
@@ -11,6 +11,7 @@ import {NavigationMenu} from "@/types/menu.type";
 import MainNavigation from '@/components/shared/layouts/header/menu/main-navigation'
 import Cart from "@/components/shared/layouts/header/cart";
 import {getSessionCart} from "@/lib/actions/cart/cart.action";
+import {SearchBlock} from "@/components/shared/layouts/header/SearchBlock";
 
 
 interface HeaderProps {

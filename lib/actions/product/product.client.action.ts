@@ -7,20 +7,14 @@ import { memoryCache } from "@/lib/cache/memory-cache";
 import prisma from "@/lib/prisma";
 import { formatError } from "@/lib/utils";
 import { cleanupExpiredOrdersByProductSlug } from '@/lib/actions/orden/orden.action';
+import {formatPrice} from "@/lib/utils/format-price";
 
 const CACHE_KEY = 'products-gallery'
 
 // Функция для форматирования цены
-const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('es-ES', {
-        style: 'currency',
-        currency: 'EUR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(price);
-};
 
-interface ProductApiResponse {
+
+export interface ProductApiResponse {
     success: boolean;
     data: ProductClient[] | null;  // Вместо старого типа
     message: string | null;
