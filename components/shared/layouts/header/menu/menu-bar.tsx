@@ -19,13 +19,13 @@ export default function MenuBar({menu, onSectionHover, activeSection}: MenuBarPr
         <div className="w-full flex items-end justify-center pb-0.5">
             <nav className="flex items-center">
                 {menu.sections.map((section, index) => (
-                    <Link key={index} href={`${ROUTES.PAGES.HOME}${section.url}`}>
+                    <Link key={index} href={`${section.url}`}>
                         <div
                             key={index}
-                            className={`
-               navigation-bar-text cursor-pointer hover:text-brand md:px-2 
-              ${activeSection === section.title ? 'text-brand' : ''}
-            `}
+
+                            className={`navigation-bar-text cursor-pointer hover:text-brand md:px-2 
+                                        ${activeSection === section.title ? 'text-brand' : ''}`}
+
                             onMouseEnter={() => onSectionHover?.(section.title)}
 
                             onMouseLeave={() => onSectionHover?.(null)}

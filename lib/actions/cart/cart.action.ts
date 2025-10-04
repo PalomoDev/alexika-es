@@ -80,7 +80,7 @@ export const checkCartByUserId = async (userId: string): Promise<boolean> => {
 
 export const addItemToCart = async (item: CartItem): Promise<ActionResponse<CartItem>> => {
     try {
-        console.log('Actions_Add_Item_To_Cart: ', item);
+
 
         const itemValidated = cartItemSchema.parse(item);
 
@@ -161,32 +161,28 @@ export const addItemToCart = async (item: CartItem): Promise<ActionResponse<Cart
 export const createCart = async (): Promise<ActionResponse<string>> => {
     try {
         const headersList = await headers();
-        const session = await auth.api.getSession({
-            headers: headersList
-        });
-
+        const session = await auth.api.getSession({ headers: headersList });
         const cookieStore = await cookies();
 
+        // === ЕСЛИ ПОЛЬЗОВАТЕЛЬ АВТОРИЗОВАН ===
         if (session?.user) {
-            // Для авторизованного пользователя - ищем ВСЕ его корзины
             const sessionCartId = cookieStore.get('session-cart-id')?.value;
 
+            // 1. Ищем все корзины пользователя и (опционально) сессионную
             const allUserCarts = await prisma.cart.findMany({
                 where: {
                     OR: [
-                        { userId: session.user.id }, // корзины пользователя
-                        ...(sessionCartId ? [{ sessionCartId: sessionCartId }] : []) // сессионная корзина если есть
+                        { userId: session.user.id },
+                        ...(sessionCartId ? [{ sessionCartId }] : [])
                     ]
                 },
-                orderBy: { updatedAt: 'desc' } // самая свежая первой
+                orderBy: { updatedAt: 'desc' }
             });
 
+            // === СЦЕНАРИЙ 1: корзины есть ===
             if (allUserCarts.length > 0) {
-                // Объединяем корзины если их больше одной
                 if (allUserCarts.length > 1) {
-                    console.log(`Found ${allUserCarts.length} carts for user ${session.user.id}, merging...`);
-
-                    // Собираем все товары из всех корзин
+                    // 1a. Если их несколько → объединяем в одну
                     const allItems: CartItem[] = [];
                     let totalItemsPrice = 0;
                     let totalShippingPrice = 0;
@@ -202,48 +198,38 @@ export const createCart = async (): Promise<ActionResponse<string>> => {
                         totalPrice += Number(cart.totalPrice);
                     }
 
-                    // Объединяем одинаковые товары (суммируем количества)
+                    // объединяем одинаковые товары по id
                     const mergedItems = allItems.reduce((acc: CartItem[], item: CartItem) => {
-                        const existingItem = acc.find((existing) => existing.id === item.id);
-                        if (existingItem) {
-                            existingItem.qty += item.qty;
+                        const existing = acc.find((i) => i.id === item.id);
+                        if (existing) {
+                            existing.qty += item.qty;
                         } else {
                             acc.push({ ...item });
                         }
                         return acc;
                     }, []);
 
-                    // Используем самую новую корзину как основную
+                    // самую свежую корзину берём как основную
                     const mainCart = allUserCarts[0];
 
-                    // Обновляем основную корзину объединенными данными
                     const updatedCart = await prisma.cart.update({
                         where: { id: mainCart.id },
                         data: {
-                            userId: session.user.id, // привязываем к пользователю
+                            userId: session.user.id,
                             items: mergedItems,
                             itemsPrice: totalItemsPrice,
                             shippingPrice: totalShippingPrice,
                             taxPrice: totalTaxPrice,
                             totalPrice: totalPrice,
-                            setOrder: false // сбрасываем флаг заказа
+                            setOrder: false
                         }
                     });
 
-                    // Удаляем остальные корзины
-                    const cartsToDelete = allUserCarts.slice(1).map(cart => cart.id);
+                    // остальные корзины удаляем
+                    const cartsToDelete = allUserCarts.slice(1).map((c) => c.id);
                     if (cartsToDelete.length > 0) {
-                        await prisma.cart.deleteMany({
-                            where: {
-                                id: {
-                                    in: cartsToDelete
-                                }
-                            }
-                        });
+                        await prisma.cart.deleteMany({ where: { id: { in: cartsToDelete } } });
                     }
-
-                    console.log(`Merged ${allUserCarts.length} carts into cart ${updatedCart.id}`);
-                    console.log(`Total items: ${mergedItems.length}, Total price: ${totalPrice}`);
 
                     return {
                         success: true,
@@ -251,16 +237,13 @@ export const createCart = async (): Promise<ActionResponse<string>> => {
                         message: `Carritos combinados - ${mergedItems.length} productos`
                     };
                 } else {
-                    // Только одна корзина - просто привязываем к пользователю если нужно
+                    // 1b. Одна корзина → убеждаемся, что привязана к пользователю
                     const existingCart = allUserCarts[0];
 
                     if (!existingCart.userId) {
                         await prisma.cart.update({
                             where: { id: existingCart.id },
-                            data: {
-                                userId: session.user.id,
-                                setOrder: false
-                            }
+                            data: { userId: session.user.id, setOrder: false }
                         });
                     }
 
@@ -272,8 +255,30 @@ export const createCart = async (): Promise<ActionResponse<string>> => {
                 }
             }
 
-            // Создаем новую корзину только если совсем нет корзин
-            const cart = await prisma.cart.create({
+            // === СЦЕНАРИЙ 2: у юзера нет корзин ===
+            // Проверяем — а нет ли сессионной корзины в cookie?
+            if (sessionCartId) {
+                const sessionCart = await prisma.cart.findFirst({
+                    where: { sessionCartId }
+                });
+
+                if (sessionCart) {
+                    // Привязываем сессионную корзину к пользователю
+                    const updatedCart = await prisma.cart.update({
+                        where: { id: sessionCart.id },
+                        data: { userId: session.user.id, sessionCartId: '', setOrder: false }
+                    });
+
+                    return {
+                        success: true,
+                        data: updatedCart.id,
+                        message: 'Carrito de sesión vinculado al usuario'
+                    };
+                }
+            }
+
+            // Если корзины вообще нет и сессионной тоже нет → создаём новую пустую
+            const newCart = await prisma.cart.create({
                 data: {
                     userId: session.user.id,
                     sessionCartId: '',
@@ -288,57 +293,54 @@ export const createCart = async (): Promise<ActionResponse<string>> => {
 
             return {
                 success: true,
-                data: cart.id,
+                data: newCart.id,
                 message: 'Nuevo carrito creado'
-            };
-
-        } else {
-            // Для неавторизованного пользователя (без изменений)
-            let sessionCartId = cookieStore.get('session-cart-id')?.value;
-
-            if (!sessionCartId) {
-                sessionCartId = crypto.randomUUID();
-                cookieStore.set('session-cart-id', sessionCartId, {
-                    httpOnly: false,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'lax',
-                    maxAge: 60 * 60 * 24 * 30 // 30 дней
-                });
-            }
-
-            const existingCart = await prisma.cart.findFirst({
-                where: { sessionCartId }
-            });
-
-            if (existingCart) {
-                return {
-                    success: true,
-                    data: existingCart.id,
-                    message: 'Carrito de sesión existente'
-                };
-            }
-
-            // Создаем сессионную корзину
-            const cart = await prisma.cart.create({
-                data: {
-                    userId: null,
-                    sessionCartId,
-                    items: [],
-                    itemsPrice: 0,
-                    totalPrice: 0,
-                    shippingPrice: 0,
-                    taxPrice: 0,
-                    setOrder: false
-                }
-            });
-
-            return {
-                success: true,
-                data: cart.id,
-                message: 'Nuevo carrito de sesión creado'
             };
         }
 
+        // === ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ АВТОРИЗОВАН ===
+        let sessionCartId = cookieStore.get('session-cart-id')?.value;
+
+        if (!sessionCartId) {
+            sessionCartId = crypto.randomUUID();
+            cookieStore.set('session-cart-id', sessionCartId, {
+                httpOnly: false,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                maxAge: 60 * 60 * 24 * 30 // 30 дней
+            });
+        }
+
+        const existingCart = await prisma.cart.findFirst({
+            where: { sessionCartId }
+        });
+
+        if (existingCart) {
+            return {
+                success: true,
+                data: existingCart.id,
+                message: 'Carrito de sesión existente'
+            };
+        }
+
+        const sessionCart = await prisma.cart.create({
+            data: {
+                userId: null,
+                sessionCartId,
+                items: [],
+                itemsPrice: 0,
+                totalPrice: 0,
+                shippingPrice: 0,
+                taxPrice: 0,
+                setOrder: false
+            }
+        });
+
+        return {
+            success: true,
+            data: sessionCart.id,
+            message: 'Nuevo carrito de sesión creado'
+        };
     } catch (e: unknown) {
         console.error('Error in createCart:', e);
         return {

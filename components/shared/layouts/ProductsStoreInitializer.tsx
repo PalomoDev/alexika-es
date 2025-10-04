@@ -16,19 +16,19 @@ export default function ProductsStoreInitializer({
     const initialized = useRef(false)
 
     useEffect(() => {
-        // Предотвращаем повторную инициализацию
+
         if (initialized.current) return
 
         if (initialProducts && initialProducts.length > 0) {
-            console.log('🏪 Инициализируем products store с', initialProducts.length, 'товарами')
+
             setProducts(initialProducts)
             initialized.current = true
         } else {
-            console.warn('⚠️ Не удалось загрузить товары для store')
-            setError('Не удалось загрузить товары')
+
+            setError('No se pudieron cargar los productos')
         }
     }, [initialProducts, setProducts, setError])
 
-    // Компонент невидимый - не рендерит ничего
+
     return null
 }

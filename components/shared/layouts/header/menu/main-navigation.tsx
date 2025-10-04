@@ -13,12 +13,10 @@ export default function MainNavigation({ menu }: MainNavigationProps) {
     const [activeSection, setActiveSection] = useState<string | null>(null);
 
     const handleSectionHover = (sectionTitle: string | null) => {
-
         setActiveSection(sectionTitle);
     };
 
     const handleMouseLeave = () => {
-
         setActiveSection(null);
     };
 
@@ -52,7 +50,6 @@ export default function MainNavigation({ menu }: MainNavigationProps) {
                     section={getActiveMenuSection()!}
                     isVisible={!!activeSection && !!getActiveMenuSection()}
                     onMouseLeave={() => {
-
                         handleMouseLeave();
                     }}
                 />

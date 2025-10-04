@@ -1,24 +1,41 @@
-import Link from "next/link";
-import Logo from "@/components/shared/logo";
 
-export default function Home() {
+import Carousel from "@/components/shared/carousel";
+import {homeSlides} from "@/db/data";
+import {FeatureProducts} from "@/components/shared/layouts/home/FeatureProducts";
+
+import {FeaturedProductCard, getFeaturedProductsForHome} from "@/lib/actions/product/feature-products.action";
+import {HomeArticlesBlock} from "@/components/shared/layouts/home/HomeArticlesBlock";
+import {ArticlesTitle, articleTitles} from "@/db/articles-home";
+
+async function HomePage() {
+    const orden = ['Tiendas de campaña', 'Sacos de dormir', 'Esterillas y colchonetas', 'Accesorios']
+    const dataResponse = await getFeaturedProductsForHome();
+    const articles: ArticlesTitle[] = articleTitles;
+    let featureProducts: FeaturedProductCard[] = [];
+
+
+    if (dataResponse.data) {
+        // Сортируем продукты по порядку категорий
+        featureProducts = dataResponse.data.sort((a, b) => {
+            const indexA = orden.indexOf(a.category || '');
+            const indexB = orden.indexOf(b.category || '');
+
+            // Если категория не найдена в orden, помещаем в конец
+            const finalIndexA = indexA === -1 ? orden.length : indexA;
+            const finalIndexB = indexB === -1 ? orden.length : indexB;
+
+            return finalIndexA - finalIndexB;
+        });
+    }
+
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-full p-8">
-            <div className="flex flex-col gap-8 items-center">
-                <Logo orientation={'vertical'} size={'medium'}/>
-                <p className="text-xs text-center font-[family-name:var(--font-geist-mono)]">
-                    El sitio está en reconstrucción
-                </p>
-
-                {/* Невидимая кнопка */}
-                <Link
-                    href="/login"
-                    className="w-20 h-8 opacity-0 cursor-default"
-                    tabIndex={-1}
-                >
-                    &nbsp;
-                </Link>
-            </div>
+        <div className="pt-12">
+            <Carousel data={homeSlides}/>
+            <FeatureProducts data={featureProducts} className={'mt-12'}/>
+            <HomeArticlesBlock data={articles} className={'mt-12'}/>
         </div>
-    );
+    )
 }
+
+export default HomePage;

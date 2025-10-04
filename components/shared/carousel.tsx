@@ -47,7 +47,7 @@ const ProductCarousel = ({ data }: CarouselProps) => {
     return (
         <Carousel
             setApi={setApi}
-            className='w-full [&_*]:cursor-grab [&_*:active]:cursor-grabbing'
+            className='w-full [&_*]:cursor-default [&_*:active]:cursor-default'
             opts={{
                 loop: true,
             }}
@@ -59,10 +59,10 @@ const ProductCarousel = ({ data }: CarouselProps) => {
                 }),
             ]}
         >
-            <CarouselContent className="cursor-grab active:cursor-grabbing">
+            <CarouselContent className="cursor-pointer active:cursor-pointer">
                 {data.map((banner: Banner) => (
                     <CarouselItem key={banner.id}>
-                        <Link href={`/product/${banner.slug}`}>
+                        <Link href={`/`}>
                             <div className='relative mx-auto'>
                                 <Image
                                     src={banner.src!}
@@ -71,6 +71,7 @@ const ProductCarousel = ({ data }: CarouselProps) => {
                                     width='0'
                                     sizes='100vw'
                                     className='w-full h-auto'
+                                    priority
                                 />
                                 <div className='absolute inset-0 flex items-end justify-center pb-1'>
                                     <div className='bg-gray-900/0 px-4 py-2 flex flex-col items-center pb-4 gap-2 rounded-4xl'>

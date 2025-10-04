@@ -1,6 +1,8 @@
 'use client'
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+
+import { usePathname } from 'next/navigation'
 import {
     Sheet,
     SheetClose,
@@ -24,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from 'next/navigation';
 import { useSession, signOut } from '@/lib/auth-client';
 import { ROUTES } from "@/lib/constants/routes";
+import { useState, useEffect } from "react";
 
 interface UserButtonProps {
     side?: 'top' | 'right' | 'bottom' | 'left';
@@ -32,6 +35,11 @@ interface UserButtonProps {
 export const UserButton = ({ side = 'right' }: UserButtonProps) => {
     const { data: session, isPending } = useSession();
     const router = useRouter();
+    const pathname = usePathname()
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Вычисляем состояния
     const isLoggedIn = !!session;
@@ -41,30 +49,27 @@ export const UserButton = ({ side = 'right' }: UserButtonProps) => {
     const handleSignOut = async () => {
         try {
             await signOut()
-            router.push('/dev')
+            router.push('/')
         } catch (error) {
             console.error('Sign out failed:', error)
-            router.push('/dev') // все равно редиректим
+            router.push('/') // все равно редиректим
         }
-    }
-
-    // Показываем лоадер во время загрузки
-    if (isPending) {
-        return (
-            <Button variant="ghost" size="sm" className="relative" disabled>
-                <div className="w-6 h-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-            </Button>
-        );
     }
 
     const triggerButton = (
         <Button variant="sin_hover" size="sm" className="relative">
-            {isAdmin ? (
-                <UserCheck className="w-6 h-6 md:text-white sm:text-black" />
-            ) : isLoggedIn ? (
-                <UserCheck className="w-6 h-6 md:text-white sm:text-black" />
-            ) : (
-                <UserIcon className="w-6 h-6 md:text-white sm:text-black" />
+            {!mounted ? null : (
+                isPending ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-4 h-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                    </div>
+                ) : isAdmin ? (
+                    <UserCheck className="w-6 h-6 md:text-white sm:text-black" />
+                ) : isLoggedIn ? (
+                    <UserCheck className="w-6 h-6 md:text-white sm:text-black" />
+                ) : (
+                    <UserIcon className="w-6 h-6 md:text-white sm:text-black" />
+                )
             )}
         </Button>
     );
@@ -146,7 +151,7 @@ export const UserButton = ({ side = 'right' }: UserButtonProps) => {
                         </div>
                     ) : (
                         <div className="space-y-2">
-                            <Link href={ROUTES.PAGES.LOGIN} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                            <Link href={`/login?redirect=${encodeURIComponent(pathname)}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
                                 <LogIn className="h-5 w-5" />
                                 <span className="font-medium">Iniciar Sesión</span>
                             </Link>
@@ -156,12 +161,12 @@ export const UserButton = ({ side = 'right' }: UserButtonProps) => {
                                 <span className="font-medium">Crear Cuenta</span>
                             </Link>
                             
-                            <div className="pt-2 mt-2 border-t">
-                                <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                                    <ShoppingBag className="h-5 w-5" />
-                                    <span className="font-medium">Rastrear Pedido</span>
-                                </Link>
-                            </div>
+                            {/*<div className="pt-2 mt-2 border-t">*/}
+                            {/*    <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">*/}
+                            {/*        <ShoppingBag className="h-5 w-5" />*/}
+                            {/*        <span className="font-medium">Rastrear Pedido</span>*/}
+                            {/*    </Link>*/}
+                            {/*</div>*/}
                         </div>
                     )}
                 </div>

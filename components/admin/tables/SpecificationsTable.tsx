@@ -1,11 +1,52 @@
+
 // components/admin/SpecificationsTable.tsx
 'use client'
+
+/**
+ * Компонент SpecificationsTable отображает таблицу спецификаций для заданной категории.
+ * Позволяет просматривать и редактировать значения спецификаций.
+ * Спецификации могут иметь типы "number" или "text", а также специальные варианты выбора для ключа "actividades".
+ */
 
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { usando } from "@/db/data";
+import {
+    AISLANTE,
+    COLOR, MATERIAL_INFERIOR, MATERIAL_SUPERIOR, RELLENO_DE_LA_ESTERILLA,
+    RESISTENCIA_VIENTO, TEJIDO_EXTERIOR_INFERIOR, TEJIDO_EXTERIOR_SUPERIOR, TEJIDO_INTERIOR,
+    TEMPORADA,
+    TIENDA_EXTERIOR,
+    TIENDA_INTERIOR,
+    TIENDA_SUELO,
+    VARILLAS
+} from "@/db/specificacions";
 
+
+// --- Мок-опции для select ---
+const selectOptions: Record<string, string[]> = {
+    actividades: ["extremo", "senderismo", "camping", "aventura", "pesca y caza"],
+    "material-exterior": TIENDA_EXTERIOR,
+    "material-del-suelo": TIENDA_SUELO,
+    "tejido-exterior-superior": TEJIDO_EXTERIOR_SUPERIOR,
+    "tienda-interior": TIENDA_INTERIOR,
+    "material-varillas": VARILLAS,
+    "tejido-exterior-inferior": TEJIDO_EXTERIOR_INFERIOR,
+    "tejido-interior": TEJIDO_INTERIOR,
+    "resistencia-al-viento": RESISTENCIA_VIENTO,
+    "material-inferior": MATERIAL_INFERIOR,
+    "material-superior": MATERIAL_SUPERIOR,
+    "relleno-de-la-esterilla": RELLENO_DE_LA_ESTERILLA,
+
+
+    aislante: AISLANTE,
+    color: COLOR,
+    temporada: TEMPORADA,
+};
+
+
+// --- Типы данных ---
 interface SpecificationValue {
     specificationId: string;
     value: string;
@@ -21,22 +62,26 @@ interface Specification {
     sortOrder: number;
 }
 
+// --- Пропсы компонента ---
 interface SpecificationsTableProps {
     specifications: Specification[];
     values: SpecificationValue[];
     onChange: (values: SpecificationValue[]) => void;
 }
 
+// --- Компонент ---
 const SpecificationsTable = ({ specifications, values, onChange }: SpecificationsTableProps) => {
 
     console.log('component---------------------', specifications, values)
 
+    // --- Утилиты ---
     // Создаем мапу key -> id для быстрого поиска
     const keyToIdMap = specifications.reduce((acc, spec) => {
         acc[spec.key] = spec.id;
         return acc;
     }, {} as Record<string, string>);
 
+    // --- Функции обработки ---
     const handleValueChange = (specificationId: string, newValue: string) => {
         const currentValues = values || [];
         const existingIndex = currentValues.findIndex(sv => sv.specificationId === specificationId);
@@ -70,6 +115,7 @@ const SpecificationsTable = ({ specifications, values, onChange }: Specification
         return specId ? getCurrentValue(specId) : '';
     };
 
+    // --- JSX рендер ---
     if (!specifications || specifications.length === 0) {
         return (
             <div className="p-4 text-center text-muted-foreground border rounded-lg">
@@ -81,6 +127,7 @@ const SpecificationsTable = ({ specifications, values, onChange }: Specification
     return (
         <div className="border rounded-lg">
             <Table>
+                {/* Заголовок таблицы */}
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[300px]">Specification</TableHead>
@@ -89,6 +136,7 @@ const SpecificationsTable = ({ specifications, values, onChange }: Specification
                     </TableRow>
                 </TableHeader>
                 <TableBody>
+                    {/* Строки спецификаций */}
                     {specifications
                         .sort((a, b) => a.sortOrder - b.sortOrder)
                         .map((spec) => (
@@ -107,18 +155,19 @@ const SpecificationsTable = ({ specifications, values, onChange }: Specification
                                     {spec.unit || '-'}
                                 </TableCell>
                                 <TableCell>
-                                    {spec.key === "actividades" ? (
+                                    {/* Рендер значения спецификации */}
+                                    {spec.key in selectOptions ? (
                                         <Select
-                                            value={getCurrentValueByKey("actividades")}
+                                            value={getCurrentValue(spec.id)}
                                             onValueChange={(value) => handleValueChange(spec.id, value)}
                                         >
                                             <SelectTrigger className="max-w-xs">
-                                                <SelectValue placeholder="Select activity" />
+                                                <SelectValue placeholder={`Выберите ${spec.name.toLowerCase()}`} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {usando.map((activity) => (
-                                                    <SelectItem key={activity} value={activity}>
-                                                        {activity}
+                                                {selectOptions[spec.key].map((option) => (
+                                                    <SelectItem key={option} value={option}>
+                                                        {option}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
@@ -143,3 +192,5 @@ const SpecificationsTable = ({ specifications, values, onChange }: Specification
 };
 
 export default SpecificationsTable;
+
+

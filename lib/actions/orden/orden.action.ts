@@ -473,7 +473,7 @@ export const processPaymentSuccess = async (orderId: string, paymentData: {statu
 
 export const cleanupExpiredOrdersByProductSlug = async (productSlug: string): Promise<ActionResponse<string>> => {
     try {
-        console.log(`🔍 Checking expired orders for product: ${productSlug}`);
+        // console.log(`🔍 Checking expired orders for product: ${productSlug}`);
 
         // Время истечения - 35 минут назад
         const expiredTime = new Date(Date.now() - 35 * 60 * 1000);
@@ -496,7 +496,7 @@ export const cleanupExpiredOrdersByProductSlug = async (productSlug: string): Pr
         });
 
         if (expiredOrders.length === 0) {
-            console.log(`No expired orders found for product: ${productSlug}`);
+            // console.log(`No expired orders found for product: ${productSlug}`);
             return {
                 success: true,
                 data: 'No expired orders found',
@@ -504,7 +504,7 @@ export const cleanupExpiredOrdersByProductSlug = async (productSlug: string): Pr
             };
         }
 
-        console.log(`Found ${expiredOrders.length} expired orders for product: ${productSlug}`);
+        // console.log(`Found ${expiredOrders.length} expired orders for product: ${productSlug}`);
 
         // Отменяем каждый истекший заказ
         let cancelledCount = 0;
@@ -513,9 +513,9 @@ export const cleanupExpiredOrdersByProductSlug = async (productSlug: string): Pr
                 const result = await returnOrderToCart(order.id, order.userId);
                 if (result.success) {
                     cancelledCount++;
-                    console.log(`✅ Cancelled expired order: ${order.id}`);
+                    // console.log(`✅ Cancelled expired order: ${order.id}`);
                 } else {
-                    console.log(`❌ Failed to cancel order ${order.id}: ${result.message}`);
+                    // console.log(`❌ Failed to cancel order ${order.id}: ${result.message}`);
                 }
             } catch (error) {
                 console.error(`Error cancelling order ${order.id}:`, error);

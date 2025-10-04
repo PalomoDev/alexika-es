@@ -248,7 +248,7 @@ function FinalizarPedido ({cart, localQuantities, onSuccess}: {
 
     const handlerToCheckout = () => {
         if(!session.data) {
-            router.push('/login');
+            router.push(`/login?redirect=${encodeURIComponent('/cart')}`);
             return;
         }
 

@@ -1,5 +1,5 @@
 
-const BASE_URL = '/dev'
+const BASE_URL = ''
 
 
 export const ROUTES = {
@@ -10,12 +10,12 @@ export const ROUTES = {
         UPLOAD: `${BASE_URL}/api/upload`,
     },
     PAGES: {
-        HOME: `${BASE_URL}`,
+        HOME: `/`,
         LOGIN:`/login`,
         REGISTER:`/register`,
         PROFILE: `${BASE_URL}/dashboard`,
         CART: `${BASE_URL}/cart`,
-        PRODUCTS: `${BASE_URL}/products`,
+        PRODUCTS: `/products`,
         PRODUCT: `${BASE_URL}/product/`,
         ORDERS: `${BASE_URL}/user/orders`,
         ARTICLES: `${BASE_URL}/alexika-traveler-club`,

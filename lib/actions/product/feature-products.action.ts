@@ -31,12 +31,12 @@ export async function getFeaturedProductsForHome(): Promise<FeaturedProductsResp
     // Проверяем кеш
     const cached = memoryCache.get<FeaturedProductsResponse>(FEATURED_HOME_CACHE_KEY)
     if (cached) {
-        console.log('✅ Используем кешированные рекомендуемые продукты для главной')
+        // console.log('✅ Используем кешированные рекомендуемые продукты для главной')
         return cached
     }
 
     try {
-        console.log('⏳ Загружаем рекомендуемые продукты для главной страницы...')
+        // console.log('⏳ Загружаем рекомендуемые продукты для главной страницы...')
 
         // Минимальный запрос - только нужные поля
         const products = await prisma.product.findMany({
@@ -100,7 +100,7 @@ export async function getFeaturedProductsForHome(): Promise<FeaturedProductsResp
 
         // Кешируем на 15 минут
         memoryCache.set(FEATURED_HOME_CACHE_KEY, result, 2 * 60 * 1000)
-        console.log('💾 Рекомендуемые продукты для главной закешированы')
+        // console.log('💾 Рекомендуемые продукты для главной закешированы')
 
         return result
     }

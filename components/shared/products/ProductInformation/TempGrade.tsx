@@ -1,21 +1,27 @@
-import {Info} from "lucide-react";
+export type Temperature = {
+    comfortable: string
+    comfortLimit: string
+    extreme: string
+}
+type TempComponentsProps = {
+    temperature: Temperature
+}
 
 
-const TempGrade = () => {
-    const temperature = {
-        comfortable: '+20',
-        comfortLimit: '+25',
-        extreme: '-28',
-    }
+
+
+
+const TempGrade = ({ temperature }: TempComponentsProps) => {
+
     return (
         <div className={'w-full flex flex-col gap-2 cursor-help'}>
 
             <div className="group">
                 <div className="bg-[url('/svg/temp_grade.svg')] bg-contain bg-no-repeat w-[390px] h-10 flex items-center font-mono ">
-                    <div className={'w-full text-white font-bold text-2xl flex'}>
+                    <div className={'w-full text-white font-bold text-xl flex'}>
                         <div className="w-[150px] text-center pl-2">{temperature.comfortable}°C</div>
                         <div className="ml-8">{temperature.comfortLimit}°C</div>
-                        <div className="ml-10">{temperature.extreme}°C</div>
+                        <div className="ml-14">{temperature.extreme}°C</div>
                     </div>
                 </div>
                 <div className="w-[390px] flex justify-start mt-2">

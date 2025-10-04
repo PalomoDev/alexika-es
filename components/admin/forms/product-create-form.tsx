@@ -43,6 +43,7 @@ const ProductCreateForm = ({categories, brands, subcategories, features, specifi
         mode: 'onChange'
     });
 
+    const prefixNameFilestoUpload = categories[0]?.slug || 'product_out_category';
 
     const router = useRouter();
 
@@ -254,7 +255,7 @@ const ProductCreateForm = ({categories, brands, subcategories, features, specifi
                                 <FormControl>
                                     <ImageUploader
                                         maxImages={5}
-                                        prefix="product"
+                                        prefix={prefixNameFilestoUpload}
                                         onChange={handleImageChange}
                                     />
                                 </FormControl>

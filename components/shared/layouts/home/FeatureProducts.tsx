@@ -14,7 +14,7 @@ type Props = {
 
 export const FeatureProducts = ({ data, className }: Props) => {
 
-    console.log(data);
+
     return (
         <div className={cn('w-full flex flex-col gap-6', className)}>
             <h2 className={'text-3xl uppercase font-extrabold pl-1'}>Los más vendidos</h2>

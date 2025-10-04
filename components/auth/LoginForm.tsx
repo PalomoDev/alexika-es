@@ -14,11 +14,11 @@ import Link from "next/link";
 import {useState} from "react";
 
 type LoginFormData = z.infer<typeof loginSchema>
+type LoginFormProps = React.ComponentProps<'form'> & {
+    redirectFrom?: string | null;
+}
 
-export function LoginForm({
-                              className,
-                              ...props
-                          }: React.ComponentProps<"form">) {
+export function LoginForm({ className, redirectFrom, ...props }: LoginFormProps) {
     const {
         register,
         handleSubmit,
@@ -27,6 +27,7 @@ export function LoginForm({
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema)
     })
+
     const [showPassword, setShowPassword] = useState(false)
     const onSubmit = async (data: LoginFormData) => {
         try {
@@ -35,7 +36,7 @@ export function LoginForm({
                 password: data.password,
             }, {
                 onSuccess: () => {
-                    window.location.href = '/dev'
+                    window.location.href = redirectFrom || '/'
                 },
                 onError: (ctx) => {
                     setError('root', {
@@ -125,10 +126,12 @@ export function LoginForm({
 
             <div className="text-center text-sm">
                 ¿No tienes una cuenta? {" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link href="/register" className="underline underline-offset-4">
                     Regístrate
-                </a>
+                </Link>
             </div>
         </form>
     )
 }
+
+

@@ -25,12 +25,12 @@ export  default async function getAllProductsForClient(): Promise<ProductApiResp
     // Проверяем кеш
     const cached = memoryCache.get<ProductApiResponse>(CACHE_KEY)
     if (cached) {
-        console.log('✅ Используем кешированные данные')
+        // console.log('✅ Используем кешированные данные')
         return cached
     }
 
     try {
-        console.log('⏳ Загружаем данные с сервера...')
+        // console.log('⏳ Загружаем данные с сервера...')
 
         // Загружаем все продукты из БД с полными связями
         const products = await prisma.product.findMany({
@@ -197,7 +197,7 @@ export  default async function getAllProductsForClient(): Promise<ProductApiResp
 
         // Кешируем на 5 минут
         memoryCache.set(CACHE_KEY, result, 5 * 60 * 1000)
-        console.log('💾 Данные закешированы')
+        // console.log('💾 Данные закешированы')
 
         return result
     }

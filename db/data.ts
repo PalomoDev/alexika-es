@@ -72,10 +72,10 @@ export const mockNavigationMenu: NavigationMenu = {
                     description: "Refugio para todas las aventuras",
                     submenu: [
                         {name: "Tiendas extremas", href: "/products/tiendas-de-campana?category=tiendas-de-campana&subcategory=extremo"},
-                        {name: "Tiendas de senderismo", href: "/products/tiendas/3-4personas"},
-                        {name: "Tiendas de camping", href: "/products/tiendas/4estaciones"},
-                        {name: "Tiendas de aventura", href: "/products/tiendas/ultraligeras"},
-                        {name: "Tiendas de caza y pesca", href: "/products/tiendas/ultraligeras"},
+                        {name: "Tiendas de senderismo", href: "/products/tiendas-de-campana?category=tiendas-de-campana&subcategory=senderismo"},
+                        {name: "Tiendas de camping", href: "/products/tiendas-de-campana?category=tiendas-de-campana&subcategory=camping"},
+                        {name: "Tiendas de aventura", href: "/products/tiendas-de-campana?category=tiendas-de-campana&subcategory=aventura"},
+                        {name: "Tiendas de caza y pesca", href: "/products/tiendas-de-campana?category=tiendas-de-campana&subcategory=pesca-y-caza"},
                     ]
                 },
                 {
@@ -120,35 +120,35 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "ACTIVIDADES",
             displayType: "image-grid" as const,
-            url: '/products/actividades',
+            url: 'products/actividades',
             items: [
                 {
                     name: "Extremo",
-                    href: "/products/actividades?subcategory=extremo",
+                    href: "products/actividades?subcategory=extremo",
                     image: "/menu/activity/extremo.png",
                     alt: "Foto de Xavier von Erlach en Unsplash"
                 },
                 {
                     name: "Senderismo",
-                    href: "/products/actividades?subcategory=senderismo",
+                    href: "products/actividades?subcategory=senderismo",
                     image: "/menu/activity/senderismo.png",
                     alt: "Foto de Austin Ban en Unsplash"
                 },
                 {
                     name: "Camping",
-                    href: "/products/actividades?subcategory=camping",
+                    href: "products/actividades?subcategory=camping",
                     image: "/menu/activity/camping.png",
                     alt: "Foto de Lesly Derksen en Unsplash"
                 },
                 {
                     name: "Aventura",
-                    href: "/products/actividades?subcategory=aventura",
+                    href: "products/actividades?subcategory=aventura",
                     image: "/menu/activity/aventura.png",
                     alt: "Foto de Filip Mroz en Unsplash"
                 },
                 {
                     name: "Pesca y caza",
-                    href: "/products/actividades?subcategory=pesca-y-caza",
+                    href: "products/actividades?subcategory=pesca-y-caza",
                     image: "/menu/activity/pesca.png",
                     alt: "Foto de Robson Hatsukami Morgan en Unsplash"
                 }
@@ -159,39 +159,40 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "SERVICIO",
             displayType: "cards" as const,
-            url: '/articles',
+            url: '/',
             items: [
                 {
-                    name: "Servicio de reparación",
-                    href: "/alexika-traveler-club/como-elegir-la-tienda-de-campana-ideal-para-tus-aventuras",
-                    image: "/activities/trail-running.png",
-                    alt: "Servicio de reparación de equipos",
-                    description: "Servicio sostenible: reparar en lugar de tirar"
+                    name: "Alexika Traveler Club",
+                    href: "alexika-traveler-club",
+                    image: "/menu/servicio/krisjanis-mezulis-__E07WwlywA-unsplash 1.png",
+                    alt: "Foto de Krisjanis Mezulis en Unsplash",
+                    description: "Comunidad de aventureros"
                 },
                 {
-                    name: "Sistemas de espalda",
-                    href: "/servicio/sistemas-espalda",
-                    image: "/activities/trail-running.png",
+                    name: "Tienda ideal para aventuras",
+                    href: "alexika-traveler-club/como-elegir-la-tienda-de-campana-ideal-para-tus-aventuras",
+                    image: "/articles-home/elegir-tienda/cover.png",
+                    alt: "Servicio de reparación de equipos",
+                    description: "Guía de selección"
+                },
+                {
+                    name: "Saco de dormir perfecto",
+                    href: "alexika-traveler-club/como-elegir-el-saco-de-dormir-perfecto-para-camping-y-montana",
+                    image: "/articles-home/elegir-saca/cover.png",
                     alt: "Ajuste de sistemas de espalda",
-                    description: "El sistema adecuado para cada área de uso y cada persona"
+                    description: "Guía de selección"
                 },
                 {
                     name: "Guía del Viajero",
-                    href: "/service/guia-del-viajero",
+                    href: "service/guia-del-viajero",
                     image: "/service/ashley-knedler-Pf5Pj7A5ddA-unsplash 1.png",
                     alt: "Foto de Ashley Knedler en Unsplash",
                     description: "Consejos esenciales para tu primera aventura"
                 },
-                {
-                    name: "Primeros auxilios",
-                    href: "/servicio/primeros-auxilios",
-                    image: "/activities/trail-running.png",
-                    alt: "Kit de primeros auxilios",
-                    description: "Botiquines profesionales para sus actividades al aire libre"
-                },
+
                 {
                     name: "Cuidado del Equipo",
-                    href: "/service/care",
+                    href: "service/care",
                     image: "/service/annie-spratt-zH4OX1HSIaE-unsplash 1.png",
                     alt: "Foto de Annie Spratt en Unsplash",
                     description: "Guías de mantenimiento y uso correcto para tiendas y esterillas"
@@ -203,23 +204,23 @@ export const mockNavigationMenu: NavigationMenu = {
         {
             title: "LA MARCA",
             displayType: "text-list" as const,
-            url: '/la-marca',
+            url: '/',
             items: [
                 {
                     name: "Sobre nosotros",
-                    href: "/sobre"
+                    href: "sobre"
                 },
                 {
                     name: "Historia de la marca",
-                    href: "/historia"
+                    href: "historia"
                 },
                 {
                     name: "Sostenibilidad",
-                    href: "/sostenibilidad"
+                    href: "sostenibilidad"
                 },
                 {
                     name: "Contacto",
-                    href: "/tatonka/contacto"
+                    href: "contacto"
                 }
             ]
         }

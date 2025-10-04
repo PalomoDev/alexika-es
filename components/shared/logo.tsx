@@ -60,22 +60,31 @@ export default function Logo({
         <div className={`w-full flex items-center justify-center ${className}`}>
             <div className={containerClasses}>
                 {!hideIcon && (
+                    <div
+                        className="relative"
+                        style={{ width: currentSize.icon.width, height: currentSize.icon.height }}
+                    >
+                        <Image
+                            src="/svg/logo/logo-round.svg"
+                            alt="Logotipo"
+                            fill
+                            style={{ objectFit: "contain" }}
+                            priority
+                        />
+                    </div>
+                )}
+                <div
+                    className={`relative ${hideIcon ? '' : nameSpacing}`}
+                    style={{ width: nameSize.width, height: nameSize.height }}
+                >
                     <Image
-                        src="/svg/logo/logo-round.svg"
-                        alt="Логотип"
-                        width={currentSize.icon.width}
-                        height={currentSize.icon.height}
+                        src="/svg/logo/logo-name.svg"
+                        alt="Nombre de la empresa"
+                        fill
+                        style={{ objectFit: "contain" }}
                         priority
                     />
-                )}
-                <Image
-                    src="/svg/logo/logo-name.svg"
-                    alt="Название компании"
-                    width={nameSize.width}
-                    height={nameSize.height}
-                    className={hideIcon ? '' : nameSpacing}
-                    priority
-                />
+                </div>
             </div>
         </div>
     );

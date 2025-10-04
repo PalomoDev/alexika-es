@@ -4,7 +4,7 @@ import {singularizeCategoryName} from "@/lib/utils/singular";
 import {ProductClient} from "@/lib/validations/product/client";
 import {cn} from "@/lib/utils";
 import { BaseInfoDisplay } from "@/components/shared/products/ProductInformation/weight";
-import TempGrade from "@/components/shared/products/ProductInformation/TempGrade";
+import TempGrade, { Temperature } from "@/components/shared/products/ProductInformation/TempGrade";
 import CartButton from "@/components/shared/products/CartButton";
 import PriceBlock from "@/components/shared/products/PriceBlock";
 import ProductDescription from "@/components/shared/products/ProductDescription";
@@ -18,8 +18,25 @@ type ProductInformationProps = {
 const ProductInformation = ({product, className,}: ProductInformationProps) => {
 
     const acivity = product.specificationValues?.find(sv => sv.specification?.key === 'actividades')?.value || ''
+    let temperature: Temperature | undefined
 
+    if (product.category?.slug === "sacos-de-dormir") {
+        const values = product.specificationValues ?? []
 
+        temperature = {
+            comfortable: formatTemp(
+                values.find(v => v.specification.key === "temperatura-de-confort")?.value
+            ),
+            comfortLimit: formatTemp(
+                values.find(v => v.specification.key === "temperatura-limite-de-confort")?.value
+            ),
+            extreme: formatTemp(
+                values.find(v => v.specification.key === "temperatura-extrema")?.value
+            ),
+        }
+
+        console.log(temperature)
+    }
 
     return (
         <div className={cn("flex flex-col items-start justify-between", className)}>
@@ -39,7 +56,9 @@ const ProductInformation = ({product, className,}: ProductInformationProps) => {
 
 
 
-                {product.category?.slug === 'sacos-de-dormir' && <TempGrade/>}
+                {product.category?.slug === 'sacos-de-dormir' && temperature && (
+                    <TempGrade temperature={temperature}/>
+                )}
 
 
 
@@ -70,3 +89,11 @@ const ProductInformation = ({product, className,}: ProductInformationProps) => {
 }
 
 export default ProductInformation
+
+
+function formatTemp(value?: string): string {
+    if (value == null || value === "") return ""
+    const num = Number(value)
+    if (isNaN(num)) return ""
+    return num > 0 ? `+${num}` : `${num}` // отрицательное уже будет со знаком
+}

@@ -53,7 +53,7 @@ function ArticleCard(article: ArticlesTitle) {
 
 
             {/* Контент поверх изображения */}
-            <div className="relative z-20 h-full text-white">
+            <div className="relative z-2 h-full text-white">
                 <CardHeader className="absolute bottom-0 w-full h-1/5 bg-brand p-4 pl-6 ">
                     <div>
                         <h3 className="font-bold text-2xl uppercase whitespace-pre-line">

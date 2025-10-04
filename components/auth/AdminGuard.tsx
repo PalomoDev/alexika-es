@@ -14,7 +14,7 @@ export const AdminGuard = ({ userRole, children }: AdminGuardProps) => {
 
     useEffect(() => {
         if (userRole !== 'admin') {
-            router.push('/dev');
+            router.push('/');
         }
     }, [userRole, router]);
 
